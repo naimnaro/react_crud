@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="App">
       <div className ="black-nav">
-        <h4> 리액트 리액트 야야야</h4>
+        <h4> 리액트 리액트 야야야 아와와왕</h4>
 
       </div>
     
