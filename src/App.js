@@ -11,13 +11,15 @@ function App() {
   return (
     <div className="App">
       <div className ="black-nav">
-        <h4> 리액트 리액트 야야야 아와와왕</h4>
+        <h4> REACT_BLOG</h4>
       </div>
       <div className="list">
-        <h4> 아아아 </h4>
+        <h4> {글제목}</h4>
+        <p> ABCDEF </p>
       </div>
       <div className="list">
         <h4> 아아아2 </h4>
+        <p> ABCDEF </p>
       </div>
     
     </div>
