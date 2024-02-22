@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import './LoginValidation';
+import validation from './LoginValidation';
 
 function Login() {
     const [values, setValues] = useState({
@@ -13,9 +14,11 @@ function Login() {
     }
     const handleSumbit = (event) => {
       event.prevenDefault();
+      setErrors(validation(values));
       
       
     }
+    
   return (
     <div className='d-flex justify-content-center align-items-center bg-secondary vh-100'>
       <div className='bg-white p-3 rounded w-25'>
