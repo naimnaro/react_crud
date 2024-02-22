@@ -11,7 +11,8 @@ const db = mysql.createConnection({
     host : "localhost",
     user : "root",
     password : "1994",
-    database : "users"
+    database : "users",
+    port : 3307
 })
 
 app.post('/users', (req, res) => {
