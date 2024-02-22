@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 function Signup() {
   return (
     <div className='d-flex justify-content-center align-items-center bg-secondary vh-100'>
-      <div className='p-3 bg-white w-25'>
+      <div className='bg-white p-3 rounded w-25'>
       <h2 className='mb-3'> Sign-Up </h2>
         <form action=''>
           <div className='mb-3'>
