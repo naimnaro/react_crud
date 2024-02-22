@@ -13,7 +13,7 @@ const db = mysql.createConnection({
     database : "signup"
 })
 
-app.post('/signup', (req, res) => {
+app.post('/Signup', (req, res) => {
     const sql = "Insert Into login ('name','email','password') VALUES (?)";
     const values =[
         req.body.name,
