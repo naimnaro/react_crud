@@ -10,17 +10,20 @@ app.use(express.json());
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "",
+    password: "1994",
+    port:3306,
     database: "users"
 });
 
 app.post('/signup', (req, res) => {
-    const sql = "INSERT INTO login (name,email,password) VALUES (?)";
+    const sql = "INSERT INTO login (name, email, password) VALUES (?, ?, ?)";
     const values = [
         req.body.name,
         req.body.email,
         req.body.password
     ];
+    console.log("SQL Query:", sql);
+    console.log(values);
     db.query(sql, [values], (err, data) => {
         if (err) {
             return res.json("Error");
