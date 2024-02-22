@@ -5,7 +5,7 @@ function validation(values) {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/
 
-    if (!values.email) 
+    if (values.email === "") 
     {
         errors.email = "Email should not be empty";
     } 
@@ -20,7 +20,7 @@ function validation(values) {
 
     // 비밀번호 유효성 검사
     
-    if (!values.password) 
+    if (values.password === "") 
     {
         errors.password = "Password should not be empty";
     } 
