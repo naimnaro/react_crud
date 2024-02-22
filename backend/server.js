@@ -11,10 +11,10 @@ const db = mysql.createConnection({
     host : "localhost",
     user : "root",
     password : "1994",
-    database : "signup"
+    database : "users"
 })
 
-app.post('/signup', (req, res) => {
+app.post('/users', (req, res) => {
     const sql = "INSERT INTO login (`name`, `email`, `password`) VALUES (?, ?, ?)";
     const values =[
         req.body.name,
