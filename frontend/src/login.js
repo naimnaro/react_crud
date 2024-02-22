@@ -13,7 +13,7 @@ function Login() {
       setValues(prev => ({...prev, [event.target.name]:[event.target.value] }))
     }
     const handleSumbit = (event) => {
-      event.prevenDefault();
+      event.preventDefault();
       setErrors(validation(values));
       
       
@@ -27,13 +27,13 @@ function Login() {
             <div className='mb-3'>
                 <label htmlFor="email">Email</label>
                 <input type="email" placeholder='Enter email' name ='email'
-                onChange={handleSumbit} className='form-control rounded-0'/>
+                onChange={handleInput} className='form-control rounded-0'/>
                 {errors.email && <span className='text-danger'> {errors.email} </span>}
             </div>
             <div className='mb-3'>
                 <label htmlFor="password">Password</label>
                 <input type="password" placeholder='Enter password' name ='password'
-                onChange={handleSumbit} className='form-control rounded-0'/>
+                onChange={handleInput} className='form-control rounded-0'/>
                  {errors.password && <span className='text-danger'> {errors.password} </span>}
             </div>
             <button type='submit' className='btn btn-success w-100 rounded-0 mb-2'>Login</button>
