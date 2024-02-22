@@ -12,7 +12,7 @@ const db = mysql.createConnection({
     user : "root",
     password : "1994",
     database : "users",
-    port : 3307
+    
 })
 
 app.post('/users', (req, res) => {
@@ -32,6 +32,6 @@ app.post('/users', (req, res) => {
     })
 })
 
-app.listen(3000, () => {
+app.listen(8081, () => {
     console.log("listening...");
 })
