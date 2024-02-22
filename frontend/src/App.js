@@ -1,13 +1,15 @@
 import React from 'react'
-import React from './login'
+import Login from './Login'
+import Signup from './Signup'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
+
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path= '/' element = {<login />}> </Route>
-        <Route path= '/signup' element = {<signup />}> </Route>
+        <Route path= '/' element = {<Login />}> </Route>
+        <Route path= '/Signup' element = {<Signup />}> </Route>
 
       </Routes>
     </BrowserRouter>
