@@ -11,12 +11,12 @@ const db = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "1994",
-    port:3306,
-    database: "users"
+    database: "account"
 });
 
 app.post('/signup', (req, res) => {
-    const sql = "INSERT INTO login (name, email, password) VALUES (?, ?, ?)";
+    const sql = "INSERT INTO `login`(`name`, `email`, `password`) VALUES ('" + req.body.name + "', '" + req.body.email + "', '" + req.body.password + "')";
+
     const values = [
         req.body.name,
         req.body.email,
@@ -24,9 +24,11 @@ app.post('/signup', (req, res) => {
     ];
     console.log("SQL Query:", sql);
     console.log(values);
+    console.log(req.body);
     db.query(sql, [values], (err, data) => {
         if (err) {
-            return res.json("Error");
+            console.error("Error executing query:", err); // 에러 로그 출력
+            return res.status(500).json({ error: "Error executing query" }); // 에러 응답 전송
         }
         return res.json(data);
     });
