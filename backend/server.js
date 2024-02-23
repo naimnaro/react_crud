@@ -1,5 +1,6 @@
 const express = require("express");
 const mysql = require('mysql');
+const dbConfig = require('./config');
 const cors = require('cors');
 const { check, validationResult } = require('express-validator');
 
@@ -7,12 +8,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "1994",
-    database: "account"
-});
+const db = mysql.createConnection(dbConfig);
 
 app.post('/signup', (req, res) => {
     const sql = "INSERT INTO `login`(`name`, `email`, `password`) VALUES ('" + req.body.name + "', '" + req.body.email + "', '" + req.body.password + "')";
