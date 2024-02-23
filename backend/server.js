@@ -32,7 +32,7 @@ app.post('/signup', (req, res) => {
 
 app.post('/login', [
     check('email', "Emaill length error").isEmail().isLength({ min: 10, max: 30 }),
-    check('password', "password length 8-10").isLength({ min: 8, max: 10 })
+    check('password', "password length 8-10").isLength({ min: 8, max: 30 })
 ], (req, res) => {
     const sql = "SELECT * FROM login WHERE email = ? AND password = ?";
     db.query(sql, [req.body.email, req.body.password], (err, data) => {
