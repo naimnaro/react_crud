@@ -26,6 +26,7 @@ function Login({setUser}) {
           } else if (res.data.success) {
             setBackendError([]);
             setUser(res.data.user); // 로그인한 사용자 정보 설정
+            localStorage.setItem('user', JSON.stringify(res.data.user));
             navigate('/home');
           } else {
             alert('No record existed');
