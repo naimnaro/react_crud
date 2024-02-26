@@ -1,40 +1,26 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
+function Home({ user, setUser }) {
+    const navigate = useNavigate();
 
-
-function Home({ user,setUser }) {
-
-    useEffect(() => {
-        console.log("User:", user);
-    }, [user]);
-    const divStyle = {
-        fontSize: '60px', // 원하는 크기로 조정하세요
-        textAlign: 'center', // 텍스트를 가운데 정렬합니다
-        position: 'absolute', // 절대 위치로 설정합니다
-        top: '50%', // 수직 방향으로 중앙에 배치합니다
-        left: '50%', // 수평 방향으로 중앙에 배치합니다
-        transform: 'translate(-50%, -50%)', // 수평 및 수직으로 이동하여 정중앙에 배치합니다
-    };
     const handleLogout = () => {
-        // 로컬 스토리지에서 사용자 정보 삭제
         localStorage.removeItem('user');
-        // 사용자 상태를 null로 설정하여 로그아웃
         setUser(null);
+        navigate('/');
     };
-
 
     return (
-        <div style={divStyle}>
-            {user ? (
-                <>
-                    <p>Welcome {user.name}!</p>
-                    <button onClick={handleLogout}>Logout</button>
-                </>
-            ) : (
-                <p>Welcome</p>
+        <div className="container d-flex justify-content-center align-items-center vh-100">
+            {user && (
+                <div className="text-center">
+                    <p className="mb-4"  style={{ fontSize: '24px' }} >환영합니다, {user.name}님!</p>
+                    <button className="btn btn-success" style={{ marginRight: '0.5rem' }}>자유 게시판</button>
+                    <button className="btn btn-danger" onClick={handleLogout} style={{ marginRight: '0.5rem' }}>로그아웃</button>
+                </div>
             )}
         </div>
     );
 }
 
-export default Home
+export default Home;
