@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 
 
-function Home({ user }) {
+
+function Home({ user,setUser }) {
+
     useEffect(() => {
         console.log("User:", user);
     }, [user]);
@@ -13,10 +15,24 @@ function Home({ user }) {
         left: '50%', // 수평 방향으로 중앙에 배치합니다
         transform: 'translate(-50%, -50%)', // 수평 및 수직으로 이동하여 정중앙에 배치합니다
     };
+    const handleLogout = () => {
+        // 로컬 스토리지에서 사용자 정보 삭제
+        localStorage.removeItem('user');
+        // 사용자 상태를 null로 설정하여 로그아웃
+        setUser(null);
+    };
+
 
     return (
         <div style={divStyle}>
-           {user ? `Welcome ${user.name}!` : "Welcome"}
+            {user ? (
+                <>
+                    <p>Welcome {user.name}!</p>
+                    <button onClick={handleLogout}>Logout</button>
+                </>
+            ) : (
+                <p>Welcome</p>
+            )}
         </div>
     );
 }
