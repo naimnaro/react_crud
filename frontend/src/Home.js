@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react';
 
 
-function Home() {
+function Home({ user }) {
+    useEffect(() => {
+        console.log("User:", user);
+    }, [user]);
     const divStyle = {
         fontSize: '60px', // 원하는 크기로 조정하세요
         textAlign: 'center', // 텍스트를 가운데 정렬합니다
@@ -12,7 +15,9 @@ function Home() {
     };
 
     return (
-        <div style={divStyle}>Welcome</div>
+        <div style={divStyle}>
+           {user ? `Welcome ${user.name}!` : "Welcome"}
+        </div>
     );
 }
 

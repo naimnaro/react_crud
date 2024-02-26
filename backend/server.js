@@ -41,12 +41,13 @@ app.post('/login', [
             return res.json(errors);
         } else {
             if (err) {
-                return res.json("Error");
+                return res.json({ success: false, error: "Error" });
             }
             if (data.length > 0) {
-                return res.json("Success");
+                const user = data[0]; // 첫 번째 사용자 데이터를 가져옴
+                return res.json({ success: true, user: user });
             } else {
-                return res.json("Faile");
+                return res.json({ success: false, error: "No record existed" });
             }
         }
     });

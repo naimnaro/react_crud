@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Validation from './LoginValidation';
 
-function Login() {
+function Login({setUser}) {
   const [values, setValues] = useState({ email: '', password: '' });
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
@@ -23,13 +23,12 @@ function Login() {
         .then((res) => {
           if (res.data.errors) {
             setBackendError(res.data.errors);
-          } else {
+          } else if (res.data.success) {
             setBackendError([]);
-            if (res.data === 'Success') {
-              navigate('/home');
-            } else {
-              alert('No record existed');
-            }
+            setUser(res.data.user); // 로그인한 사용자 정보 설정
+            navigate('/home');
+          } else {
+            alert('No record existed');
           }
         })
         .catch((err) => console.log(err));
