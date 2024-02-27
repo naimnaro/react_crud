@@ -23,13 +23,13 @@ app.post('/signup', [
     }
 
     // 이름과 이메일을 따로 중복 확인하여 이미 존재하는 경우 오류 메시지 반환
-    db.query('SELECT * FROM login WHERE name = ?', [req.body.name], (err, nameResults) => {
+    db.query('SELECT * FROM users WHERE name = ?', [req.body.name], (err, nameResults) => {
         if (err) {
             console.error("Error executing name query:", err);
             return res.status(500).json({ error: "Error executing name query" });
         }
 
-        db.query('SELECT * FROM login WHERE email = ?', [req.body.email], (err, emailResults) => {
+        db.query('SELECT * FROM users WHERE email = ?', [req.body.email], (err, emailResults) => {
             if (err) {
                 console.error("Error executing email query:", err);
                 return res.status(500).json({ error: "Error executing email query" });
@@ -48,8 +48,8 @@ app.post('/signup', [
             }
 
             // 중복이 없으면 회원가입 처리 진행
-            const sql = "INSERT INTO `login`(`name`, `email`, `password`) VALUES (?, ?, ?)";
-            
+            const sql = "INSERT INTO `users`(`name`, `email`, `password`) VALUES (?, ?, ?)";
+
             const values = [req.body.name, req.body.email, req.body.password];
 
             db.query(sql, values, (err, data) => {
@@ -72,13 +72,13 @@ app.post('/login', [
         return res.status(400).json({ errors: errors.array() });
     }
 
-    const sql = "SELECT * FROM login WHERE email = ? AND password = ?";
+    const sql = "SELECT * FROM users WHERE email = ? AND password = ?";
     const values = [req.body.email, req.body.password];
 
     db.query(sql, values, (err, data) => {
         if (err) {
-            console.error("Error executing login query:", err);
-            return res.status(500).json({ error: "Error executing login query" });
+            console.error("Error executing users query:", err);
+            return res.status(500).json({ error: "Error executing users query" });
         }
         if (data.length > 0) {
             const user = data[0];
