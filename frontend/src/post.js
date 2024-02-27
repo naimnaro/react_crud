@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-function PostForm() {
+function PostForm({ user }) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:8081/posts', { title, content });
+      await axios.post('http://localhost:8081/post', { title, content, author_name: user.name });
       alert('게시글이 성공적으로 작성되었습니다.');
       // 게시글 작성 후 필요한 작업 수행
     } catch (error) {

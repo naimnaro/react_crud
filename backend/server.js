@@ -89,6 +89,19 @@ app.post('/login', [
     });
 });
 
+app.post('/post', (req, res) => {
+    const { title, content, author_name } = req.body; // 클라이언트로부터 제목, 내용, 작성자 ID를 받아옵니다.
+    const sql = 'INSERT INTO post (title, content, author_name) VALUES (?, ?, ?)';
+    db.query(sql, [title, content, author_name], (err, result) => {
+      if (err) {
+        console.error('게시글 작성에 실패했습니다.', err);
+        return res.status(500).json({ error: '게시글 작성에 실패했습니다.' });
+      }
+      console.log('게시글이 성공적으로 작성되었습니다.');
+      res.json({ success: true, message: '게시글이 성공적으로 작성되었습니다.' });
+    });
+  });
+
 app.listen(8081, () => {
     console.log("Server is running on port 8081");
 });
