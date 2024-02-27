@@ -28,8 +28,7 @@ function PostList({user}) {
       {posts.map((post) => (
         <div key={post.post_id} onClick={() => handlePostClick(post.post_id)}>
           <h3>{post.title}</h3>
-          <p>작성자: {post.author_name}</p>
-          <p>작성일자: {post.created_at}</p>
+          <p>작성자: {post.author_name} 작성일자: {post.created_at} </p>
         </div>
       ))}
     </div>
