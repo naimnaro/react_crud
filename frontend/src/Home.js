@@ -13,12 +13,17 @@ function Home({ user, setUser }) {
         navigate('/');
     };
 
+    const handletoboard = () => {
+        navigate('/post');
+        
+    };
+
     return (
         <div className="container d-flex justify-content-center align-items-center vh-100">
             {user && (
                 <div className="text-center">
                     <p className="mb-4"  style={{ fontSize: '24px' }} >환영합니다, {user.name}님!</p>
-                    <button className="btn btn-success" style={{ marginRight: '0.5rem' }}>자유 게시판</button>
+                    <button className="btn btn-success" onClick={handletoboard} style={{ marginRight: '0.5rem' }}>자유 게시판</button>
                     <button className="btn btn-danger" onClick={handleLogout} style={{ marginRight: '0.5rem' }}>로그아웃</button>
                 </div>
             )}

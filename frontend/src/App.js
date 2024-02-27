@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './login';
 import Signup from './signup';
 import Home from './Home';
+import PostForm from './post';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -20,6 +21,7 @@ function App() {
         <Route path="/" element={<Login setUser={setUser} />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/home" element={<Home user={user} setUser={setUser} />} />
+        <Route path="/post" element={<PostForm user={user} setUser={setUser} />} />
       </Routes>
     </Router>
   );
