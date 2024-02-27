@@ -102,6 +102,18 @@ app.post('/post', (req, res) => {
     });
   });
 
+
+  app.get('/post', (req, res) => {
+    // DB에서 모든 게시물을 가져와서 클라이언트에 응답으로 보냅니다.
+    db.query('SELECT * FROM post', (err, results) => {
+      if (err) {
+        console.error('게시물을 불러오는데 실패했습니다.', err);
+        return res.status(500).json({ error: '게시물을 불러오는데 실패했습니다.' });
+      }
+      res.json(results);
+    });
+  });
+
 app.listen(8081, () => {
     console.log("Server is running on port 8081");
 });

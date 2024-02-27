@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function PostForm({ user }) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log("User:", user);
+  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,6 +23,11 @@ function PostForm({ user }) {
     }
   };
 
+  const handletopostlist = () => {
+    navigate('/postlist');
+    
+};
+
   return (
     <form onSubmit={handleSubmit}>
       <div>
@@ -28,6 +39,8 @@ function PostForm({ user }) {
         <textarea id="content" value={content} onChange={(e) => setContent(e.target.value)} />
       </div>
       <button type="submit">글쓰기</button>
+
+      <button className="btn btn-danger" onClick={handletopostlist} style={{ marginRight: '0.5rem' }}>글 목록</button>
     </form>
   );
 }
