@@ -17,6 +17,7 @@ function PostForm({ user }) {
       await axios.post('http://localhost:8081/post', { title, content, author_name: user.name });
       alert('게시글이 성공적으로 작성되었습니다.');
       // 게시글 작성 후 필요한 작업 수행
+      navigate('/postlist');
     } catch (error) {
       console.error('게시글 작성에 실패했습니다.', error);
       alert('게시글 작성에 실패했습니다.');
