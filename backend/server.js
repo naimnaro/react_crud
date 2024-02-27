@@ -49,6 +49,7 @@ app.post('/signup', [
 
             // 중복이 없으면 회원가입 처리 진행
             const sql = "INSERT INTO `login`(`name`, `email`, `password`) VALUES (?, ?, ?)";
+            
             const values = [req.body.name, req.body.email, req.body.password];
 
             db.query(sql, values, (err, data) => {
