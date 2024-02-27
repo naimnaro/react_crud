@@ -22,7 +22,16 @@ function Signup() {
         .then((res) => {
           navigate('/');
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          if (err.response && err.response.data && err.response.data.error) {
+            alert(err.response.data.error); // 중복 에러 메시지를 alert로 표시
+          } else {
+            alert('An error occurred while signing up'); // 기본적인 오류 메시지를 표시
+          }
+          console.error(err); // 에러 콘솔 출력
+        });
+        
+        
     }
   };
 
