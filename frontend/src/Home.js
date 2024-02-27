@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Home({ user, setUser }) {
     const navigate = useNavigate();
+    useEffect(() => {
+        console.log("User:", user);
+    }, [user]);
 
     const handleLogout = () => {
         localStorage.removeItem('user');
