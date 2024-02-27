@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -25,23 +25,29 @@ function PostForm({ user }) {
 
   const handletopostlist = () => {
     navigate('/postlist');
-    
-};
+  };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="title">제목:</label>
-        <input type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)} />
+    <div className="container mt-5">
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label htmlFor="title" className="form-label">제목:</label>
+              <input type="text" id="title" className="form-control" value={title} onChange={(e) => setTitle(e.target.value)} />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="content" className="form-label">내용:</label>
+              <textarea id="content" className="form-control" value={content} onChange={(e) => setContent(e.target.value)} />
+            </div>
+            <div className="d-flex justify-content-end"> {/* 오른쪽으로 정렬하는 부분 */}
+              <button type="submit" className="btn btn-primary me-2">게시글 등록</button>
+              <button type="button" className="btn btn-danger" onClick={handletopostlist}>취소</button>
+            </div>
+          </form>
+        </div>
       </div>
-      <div>
-        <label htmlFor="content">내용:</label>
-        <textarea id="content" value={content} onChange={(e) => setContent(e.target.value)} />
-      </div>
-      <button type="submit">글쓰기</button>
-
-      <button className="btn btn-danger" onClick={handletopostlist} style={{ marginRight: '0.5rem' }}>글 목록</button>
-    </form>
+    </div>
   );
 }
 

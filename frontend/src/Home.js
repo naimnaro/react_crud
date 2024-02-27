@@ -14,7 +14,7 @@ function Home({ user, setUser }) {
     };
 
     const handletoboard = () => {
-        navigate('/post');
+        navigate('/postlist');
         
     };
 
