@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Pagination, Card } from 'react-bootstrap'; // Pagination 및 Card 컴포넌트를 사용하기 위해 import 추가
+import { Pagination, Card, Row, Col } from 'react-bootstrap'; // Pagination 및 Card 컴포넌트를 사용하기 위해 import 추가
 import 'bootstrap/dist/css/bootstrap.min.css'; // 부트스트랩 CSS 파일 import
 
 function PaginationComponent() {
@@ -27,14 +27,18 @@ function PaginationComponent() {
   };
 
   return (
-    <div className="pagination-container text-center"> {/* text-center 클래스 추가 */}
-      <h2 className="mb-4">게시물 목록</h2>
+    <div className="container"> {/* text-center 클래스 추가 */}
+      <h2 className="text-center mb-4">게시물 목록</h2>
       <div className="card-container"> {/* card 컨테이너 추가 */}
         {posts.map((post) => (
           <Card key={post.post_id} className="mb-3"> {/* Card 컴포넌트 사용 */}
             <Card.Body>
               <Card.Title>{post.title}</Card.Title> {/* Card.Title로 제목 추가 */}
               <Card.Text>{post.content}</Card.Text> {/* Card.Text로 내용 추가 */}
+              <Card.Text><Row>
+                <Col xs={6}> 작성자 : {post.author_name} </Col>
+                <Col xs={6} className="text-end">작성일자 : {post.created_at} </Col></Row>
+             </Card.Text>
             </Card.Body>
           </Card>
         ))}
