@@ -28,7 +28,7 @@ function Home({ user, setUser }) {
                 <div className="text-center">
                     <p className="mb-4"  style={{ fontSize: '24px' }} >환영합니다, {user.name}님!</p>
                     <button className="btn btn-success" onClick={handletoboard} style={{ marginRight: '0.5rem' }}>자유 게시판</button>
-                    <button className="btn btn-success" onClick={handletopagenation} style={{ marginRight: '0.5rem' }}>페이징 처리</button>
+                    <button className="btn btn-success" onClick={handletopagenation} style={{ marginRight: '0.5rem' }}>자유 게시판(페이징 처리 완료버전)</button>
                     <button className="btn btn-danger" onClick={handleLogout} style={{ marginRight: '0.5rem' }}>로그아웃</button>
                 </div>
             )}
