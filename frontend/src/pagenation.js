@@ -4,7 +4,7 @@ import { Pagination, Card, Row, Col } from 'react-bootstrap'; // Pagination 및 
 import 'bootstrap/dist/css/bootstrap.min.css'; // 부트스트랩 CSS 파일 import
 import { useNavigate } from 'react-router-dom';
 
-function PaginationComponent({user}) {
+function PaginationComponent({ user }) {
     const [posts, setPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수 추가
@@ -15,7 +15,7 @@ function PaginationComponent({user}) {
         if (user !== null) {
             console.log("User:", user.name);
         }
-    }, [currentPage,user]);
+    }, [currentPage, user]);
 
     const fetchPosts = async () => {
         try {
@@ -48,7 +48,7 @@ function PaginationComponent({user}) {
                         Authorization: `Bearer ${user.token}` // 사용자의 인증 토큰을 헤더에 포함하여 보냄
                     }
                 });
-                
+
                 // 삭제가 성공한 경우, 게시물 목록을 갱신하여 업데이트
                 fetchPosts();
             } catch (error) {
@@ -68,8 +68,12 @@ function PaginationComponent({user}) {
                             <Card.Title className="d-flex justify-content-between align-items-center">
                                 <span> {post.title} </span>
                                 <div className="ml-auto">
-                                    <button className="btn btn-primary btn-sm me-2">수정</button>
-                                    <button className="btn btn-danger btn-sm" onClick={() => handleDeletePost(post.post_id, post.author_name)} >삭제</button>
+                                    {user && user.name === post.author_name && (
+                                        <>
+                                            <button className="btn btn-primary btn-sm me-2">수정</button>
+                                            <button className="btn btn-danger btn-sm" onClick={() => handleDeletePost(post.post_id, post.author_name)}>삭제</button>
+                                        </>
+                                    )}
                                 </div>
                             </Card.Title>
 
