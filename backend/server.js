@@ -165,6 +165,23 @@ app.post('/post', (req, res) => {
     res.json(data);
 });
 
+app.delete('/post/:post_id', (req, res) => {
+  const post_id = req.params.post_id;
+
+  // 게시물을 삭제하는 쿼리 작성
+  const sql = 'DELETE FROM post WHERE post_id = ?';
+
+  // 게시물 삭제 실행
+  db.query(sql, [post_id], (err, result) => {
+      if (err) {
+          console.error('게시물 삭제에 실패했습니다.', err);
+          return res.status(500).json({ error: '게시물 삭제에 실패했습니다.' });
+      }
+      console.log('게시물이 성공적으로 삭제되었습니다.');
+      res.json({ success: true, message: '게시물이 성공적으로 삭제되었습니다.' });
+  });
+});
+
 app.listen(8081, () => {
     console.log("Server is running on port 8081");
 });

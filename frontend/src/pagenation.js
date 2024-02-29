@@ -4,7 +4,7 @@ import { Pagination, Card, Row, Col } from 'react-bootstrap'; // Pagination 및 
 import 'bootstrap/dist/css/bootstrap.min.css'; // 부트스트랩 CSS 파일 import
 import { useNavigate } from 'react-router-dom';
 
-function PaginationComponent() {
+function PaginationComponent({user}) {
     const [posts, setPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수 추가
@@ -12,7 +12,10 @@ function PaginationComponent() {
 
     useEffect(() => {
         fetchPosts();
-    }, [currentPage]);
+        if (user !== null) {
+            console.log("User:", user.name);
+        }
+    }, [currentPage,user]);
 
     const fetchPosts = async () => {
         try {
@@ -36,6 +39,25 @@ function PaginationComponent() {
         navigate('/home'); // /post 경로로 이동
     };
 
+    const handleDeletePost = async (post_id, author_name) => {
+        if (user.name === author_name) {
+            try {
+                // 서버로 삭제 요청 보내기
+                await axios.delete(`http://localhost:8081/post/${post_id}`, {
+                    headers: {
+                        Authorization: `Bearer ${user.token}` // 사용자의 인증 토큰을 헤더에 포함하여 보냄
+                    }
+                });
+                
+                // 삭제가 성공한 경우, 게시물 목록을 갱신하여 업데이트
+                fetchPosts();
+            } catch (error) {
+                console.error('게시물 삭제에 실패했습니다.', error);
+            }
+        } else {
+            console.log('해당 게시물을 삭제할 권한이 없습니다.');
+        }
+    }
     return (
         <div className="container mb-3">
             <h2 className="text-center mb-3">게시물 목록</h2>
@@ -43,7 +65,14 @@ function PaginationComponent() {
                 {posts.map((post) => (
                     <Card key={post.post_id} className="mb-3">
                         <Card.Body>
-                            <Card.Title>{post.title}</Card.Title>
+                            <Card.Title className="d-flex justify-content-between align-items-center">
+                                <span> {post.title} </span>
+                                <div className="ml-auto">
+                                    <button className="btn btn-primary btn-sm me-2">수정</button>
+                                    <button className="btn btn-danger btn-sm" onClick={() => handleDeletePost(post.post_id, post.author_name)} >삭제</button>
+                                </div>
+                            </Card.Title>
+
                             <Card.Text>{post.content}</Card.Text>
                             <Card.Text>
                                 <Row>
