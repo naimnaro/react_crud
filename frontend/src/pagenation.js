@@ -39,6 +39,10 @@ function PaginationComponent({ user }) {
         navigate('/home'); // /post 경로로 이동
     };
 
+    const handleEditPost = (post_id) => {
+        navigate(`/postedit?post_id=${post_id}`); // 게시물 수정 페이지로 이동
+    };
+
     const handleDeletePost = async (post_id, author_name) => {
         if (user.name === author_name) {
             try {
@@ -70,7 +74,7 @@ function PaginationComponent({ user }) {
                                 <div className="ml-auto">
                                     {user && user.name === post.author_name && (
                                         <>
-                                            <button className="btn btn-primary btn-sm me-2">수정</button>
+                                            <button className="btn btn-primary btn-sm me-2"  onClick={() => handleEditPost(post.post_id)}>수정</button>
                                             <button className="btn btn-danger btn-sm" onClick={() => handleDeletePost(post.post_id, post.author_name)}>삭제</button>
                                         </>
                                     )}
