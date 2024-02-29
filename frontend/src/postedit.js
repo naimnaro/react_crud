@@ -12,7 +12,7 @@ function PostEdit({ user }) {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await axios.get(`http://localhost:8081/pagenation/${post_id}`);
+        const response = await axios.get(`http://localhost:8081/postedit/${post_id}`);
         const postData = response.data;
         setTitle(postData.title);
         setContent(postData.content);
@@ -27,7 +27,7 @@ function PostEdit({ user }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:8081/pagenation/${post_id}`, { title, content, author_name: user.name });
+      await axios.put(`http://localhost:8081/postedit/${post_id}`, { title, content, author_name: user.name });
       alert('게시글이 성공적으로 수정되었습니다.');
       navigate('/pagenation');
     } catch (error) {

@@ -165,6 +165,46 @@ app.post('/post', (req, res) => {
     res.json(data);
 });
 
+app.get('/postedit/:post_id', (req, res) => {
+  const post_id = req.params.post_id;
+
+  // 해당 post_id에 해당하는 게시글을 데이터베이스에서 조회하는 쿼리 작성
+  const sql = 'SELECT * FROM post WHERE post_id = ?';
+
+  // 조회된 게시글 반환
+  db.query(sql, [post_id], (err, result) => {
+      if (err) {
+          console.error('게시글 조회에 실패했습니다.', err);
+          return res.status(500).json({ error: '게시글 조회에 실패했습니다.' });
+      }
+      if (result.length === 0) {
+          // 조회된 게시글이 없을 경우 에러 응답
+          console.log('해당하는 게시글을 찾을 수 없습니다.');
+          return res.status(404).json({ error: '해당하는 게시글을 찾을 수 없습니다.' });
+      }
+      // 조회된 게시글을 클라이언트에 응답으로 반환
+      res.json(result[0]);
+  });
+});
+
+app.put('/postedit/:post_id', (req, res) => {
+  const post_id = req.params.post_id;
+  const { title, content } = req.body;
+
+  // 해당 post_id에 해당하는 게시글을 업데이트하는 쿼리 작성
+  const sql = 'UPDATE post SET title = ?, content = ? WHERE post_id = ?';
+
+  // 게시글 업데이트 실행
+  db.query(sql, [title, content, post_id], (err, result) => {
+      if (err) {
+          console.error('게시글 수정에 실패했습니다.', err);
+          return res.status(500).json({ error: '게시글 수정에 실패했습니다.' });
+      }
+      console.log('게시글이 성공적으로 수정되었습니다.');
+      res.json({ success: true, message: '게시글이 성공적으로 수정되었습니다.' });
+  });
+});
+
 app.delete('/post/:post_id', (req, res) => {
   const post_id = req.params.post_id;
 
