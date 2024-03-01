@@ -39,7 +39,7 @@ function PostForm({ user }) {
             </div>
             <div className="mb-3">
               <label htmlFor="content" className="form-label">내용:</label>
-              <textarea id="content" className="form-control" value={content} onChange={(e) => setContent(e.target.value)} />
+              <textarea id="content" className="form-control" style={{ height: '400px' }} value={content} onChange={(e) => setContent(e.target.value)} />
             </div>
             <div className="d-flex justify-content-end"> {/* 오른쪽으로 정렬하는 부분 */}
               <button type="submit" className="btn btn-primary me-2">게시글 등록</button>

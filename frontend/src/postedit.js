@@ -51,7 +51,7 @@ function PostEdit({ user }) {
           </div>
           <div className="mb-3">
             <label htmlFor="content" className="form-label">내용:</label>
-            <textarea id="content" className="form-control" value={content} onChange={(e) => setContent(e.target.value)} />
+            <textarea id="content" className="form-control" style={{ height: '400px' }} value={content} onChange={(e) => setContent(e.target.value)} />
           </div>
           <div className="d-flex justify-content-end">
             <button type="submit" className="btn btn-primary me-2">수정 완료</button>
