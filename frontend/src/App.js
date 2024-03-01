@@ -7,6 +7,7 @@ import PostForm from './post';
 import PostList from './postlist';
 import Pagination from './pagenation';
 import PostEdit from './postedit';
+import PostRead from './postread';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -28,6 +29,7 @@ function App() {
         <Route path="/postlist" element={<PostList user={user} setUser={setUser} />} />
         <Route path="/pagenation" element={<Pagination user={user} setUser={setUser} />} />
         <Route path="/postedit" element={<PostEdit user={user} setUser={setUser} />} />
+        <Route path="/postread" element={<PostRead user={user} setUser={setUser} />} />
       </Routes>
     </Router>
   );

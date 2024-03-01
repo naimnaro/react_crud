@@ -43,6 +43,10 @@ function PaginationComponent({ user }) {
         navigate(`/postedit?post_id=${post_id}`); // 게시물 수정 페이지로 이동
     };
 
+    const handleCardClick = (post_id) => {
+        navigate(`/postread?post_id=${post_id}`); // 해당 게시물의 ID를 postread 페이지로 전달
+    };
+
     const handleDeletePost = async (post_id, author_name) => {
         if (user.name === author_name) {
             try {
@@ -69,8 +73,8 @@ function PaginationComponent({ user }) {
                 {posts.map((post) => (
                     <Card key={post.post_id} className="mb-3">
                         <Card.Body>
-                            <Card.Title className="d-flex justify-content-between align-items-center">
-                                <span> {post.title} </span>
+                            <Card.Title className="d-flex justify-content-between align-items-center mb-3">
+                                <span onClick={() => handleCardClick(post.post_id)}> {post.title} </span>
                                 <div className="ml-auto">
                                     {user && user.name === post.author_name && (
                                         <>
@@ -82,8 +86,8 @@ function PaginationComponent({ user }) {
                             </Card.Title>
 
                             <Card.Text>{post.content}</Card.Text>
-                            <div>
-                                <Row>
+                            <div> 
+                                <Row className="mt-2" >
                                     <Col xs={6}><p>작성자 : {post.author_name}</p></Col>
                                     <Col xs={6} className="text-end"><p>작성일자 : {post.created_at}</p></Col>
                                 </Row>
