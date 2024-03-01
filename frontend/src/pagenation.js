@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Pagination, Card, Row, Col } from 'react-bootstrap'; // Pagination 및 Card 컴포넌트를 사용하기 위해 import 추가
-import 'bootstrap/dist/css/bootstrap.min.css'; // 부트스트랩 CSS 파일 import
+import { Pagination, Table, Button } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
 
 function PaginationComponent({ user }) {
+
     const [posts, setPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수 추가
+    const [totalPages, setTotalPages] = useState(1);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -21,7 +22,7 @@ function PaginationComponent({ user }) {
         try {
             const response = await axios.get(`http://localhost:8081/post2?page=${currentPage}`);
             setPosts(response.data.post);
-            setTotalPages(response.data.totalPages); // 서버에서 전체 페이지 수를 받아와 설정
+            setTotalPages(response.data.totalPages);
         } catch (error) {
             console.error('게시물을 불러오는데 실패했습니다.', error);
         }
@@ -32,32 +33,29 @@ function PaginationComponent({ user }) {
     };
 
     const handletoPost = () => {
-        navigate('/post'); // /post 경로로 이동
+        navigate('/post');
     };
 
     const handletoHome = () => {
-        navigate('/home'); // /post 경로로 이동
+        navigate('/home');
     };
 
     const handleEditPost = (post_id) => {
-        navigate(`/postedit?post_id=${post_id}`); // 게시물 수정 페이지로 이동
+        navigate(`/postedit?post_id=${post_id}`);
     };
 
     const handleCardClick = (post_id) => {
-        navigate(`/postread?post_id=${post_id}`); // 해당 게시물의 ID를 postread 페이지로 전달
+        navigate(`/postread?post_id=${post_id}`);
     };
 
     const handleDeletePost = async (post_id, author_name) => {
         if (user.name === author_name) {
             try {
-                // 서버로 삭제 요청 보내기
                 await axios.delete(`http://localhost:8081/post/${post_id}`, {
                     headers: {
-                        Authorization: `Bearer ${user.token}` // 사용자의 인증 토큰을 헤더에 포함하여 보냄
+                        Authorization: `Bearer ${user.token}`
                     }
                 });
-
-                // 삭제가 성공한 경우, 게시물 목록을 갱신하여 업데이트
                 fetchPosts();
             } catch (error) {
                 console.error('게시물 삭제에 실패했습니다.', error);
@@ -65,39 +63,42 @@ function PaginationComponent({ user }) {
         } else {
             console.log('해당 게시물을 삭제할 권한이 없습니다.');
         }
-    }
+    };
+
     return (
-        <div className="container mb-3">
-            <h2 className="text-center mb-3">게시물 목록</h2>
-            <div className="card-container">
-                {posts.map((post) => (
-                    <Card key={post.post_id} className="mb-3">
-                        <Card.Body>
-                            <Card.Title className="d-flex justify-content-between align-items-center mb-3">
-                                <span onClick={() => handleCardClick(post.post_id)}> {post.title} </span>
-                                <div className="ml-auto">
-                                    {user && user.name === post.author_name && (
-                                        <>
-                                            <button className="btn btn-primary btn-sm me-2" onClick={() => handleEditPost(post.post_id)}>수정</button>
-                                            <button className="btn btn-danger btn-sm" onClick={() => handleDeletePost(post.post_id, post.author_name)}>삭제</button>
-                                        </>
-                                    )}
-                                </div>
-                            </Card.Title>
+        <div className="container mt-2">
+            <h2 className="text-center mb-4 mt-4">게시물 목록</h2>
+            <Table striped bordered hover>
+                <thead>
+                    <tr>
+                        <th style={{ width: '4%' }}>번호</th>
+                        <th style={{ width: '45%' }}>제목</th>
+                        <th style={{ width: '20%' }}>작성자</th>
+                        <th style={{ width: '20%' }}>작성일자</th>
+                        <th style={{ width: '10%' }}></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {posts.map((post) => (
+                        <tr key={post.post_id}>
+                            <td className="text-center" >{post.post_id}</td>
+                            <td onClick={() => handleCardClick(post.post_id)} >{post.title}</td>
+                            <td>{post.author_name}</td>
+                            <td>{post.created_at}</td>
+                            <td>
+                                {user && user.name === post.author_name && (
+                                    <>
+                                        <Button variant="primary" size="sm" className="mx-2" onClick={(e) => { e.stopPropagation(); handleEditPost(post.post_id); }}>수정</Button>
+                                        <Button variant="danger" size="sm" onClick={(e) => { e.stopPropagation(); handleDeletePost(post.post_id, post.author_name); }}>삭제</Button>
+                                    </>
+                                )}
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
 
-                            <Card.Text>{post.content}</Card.Text>
-                            <div> 
-                                <Row className="mt-2" >
-                                    <Col xs={6}><p>작성자 : {post.author_name}</p></Col>
-                                    <Col xs={6} className="text-end"><p>작성일자 : {post.created_at}</p></Col>
-                                </Row>
-                            </div>
-                        </Card.Body>
-                    </Card>
-                ))}
-            </div>
-
-            <div className="pagination d-flex justify-content-center"> {/* d-flex justify-content-center 클래스 추가 */}
+            <div className="pagination d-flex justify-content-center mt-4">
                 <Pagination>
                     <Pagination.Prev disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)} />
                     {[...Array(totalPages)].map((_, index) => (
@@ -107,9 +108,10 @@ function PaginationComponent({ user }) {
                     ))}
                     <Pagination.Next disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)} />
                 </Pagination>
+                
             </div>
 
-            <div className="d-flex justify-content-end mb-3">
+            <div className="d-flex justify-content-end mb-4">
                 <button className="btn btn-primary me-2" onClick={handletoPost}>게시글 작성</button>
                 <button className="btn btn-secondary" onClick={handletoHome}>Home</button>
             </div>
