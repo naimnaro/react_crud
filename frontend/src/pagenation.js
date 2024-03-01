@@ -74,7 +74,7 @@ function PaginationComponent({ user }) {
                                 <div className="ml-auto">
                                     {user && user.name === post.author_name && (
                                         <>
-                                            <button className="btn btn-primary btn-sm me-2"  onClick={() => handleEditPost(post.post_id)}>수정</button>
+                                            <button className="btn btn-primary btn-sm me-2" onClick={() => handleEditPost(post.post_id)}>수정</button>
                                             <button className="btn btn-danger btn-sm" onClick={() => handleDeletePost(post.post_id, post.author_name)}>삭제</button>
                                         </>
                                     )}
@@ -82,12 +82,12 @@ function PaginationComponent({ user }) {
                             </Card.Title>
 
                             <Card.Text>{post.content}</Card.Text>
-                            <Card.Text>
+                            <div>
                                 <Row>
-                                    <Col xs={6}>작성자 : {post.author_name}</Col>
-                                    <Col xs={6} className="text-end">작성일자 : {post.created_at}</Col>
+                                    <Col xs={6}><p>작성자 : {post.author_name}</p></Col>
+                                    <Col xs={6} className="text-end"><p>작성일자 : {post.created_at}</p></Col>
                                 </Row>
-                            </Card.Text>
+                            </div>
                         </Card.Body>
                     </Card>
                 ))}
