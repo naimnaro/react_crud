@@ -206,20 +206,64 @@ app.put('/postedit/:post_id', (req, res) => {
 });
 
 app.delete('/post/:post_id', (req, res) => {
-  const post_id = req.params.post_id;
+    const post_id = req.params.post_id;
 
-  // 게시물을 삭제하는 쿼리 작성
-  const sql = 'DELETE FROM post WHERE post_id = ?';
+    // 먼저 해당 게시글과 연결된 모든 댓글을 삭제합니다.
+    const deleteCommentsQuery = 'DELETE FROM comment WHERE post_id = ?';
 
-  // 게시물 삭제 실행
-  db.query(sql, [post_id], (err, result) => {
-      if (err) {
-          console.error('게시물 삭제에 실패했습니다.', err);
-          return res.status(500).json({ error: '게시물 삭제에 실패했습니다.' });
-      }
-      console.log('게시물이 성공적으로 삭제되었습니다.');
-      res.json({ success: true, message: '게시물이 성공적으로 삭제되었습니다.' });
-  });
+    db.query(deleteCommentsQuery, [post_id], (err, commentResult) => {
+        if (err) {
+            console.error('댓글 삭제에 실패했습니다.', err);
+            return res.status(500).json({ error: '댓글 삭제에 실패했습니다.' });
+        }
+
+        // 게시글을 삭제하는 쿼리 작성
+        const deletePostQuery = 'DELETE FROM post WHERE post_id = ?';
+
+        // 게시글 삭제 실행
+        db.query(deletePostQuery, [post_id], (err, postResult) => {
+            if (err) {
+                console.error('게시물 삭제에 실패했습니다.', err);
+                return res.status(500).json({ error: '게시물 삭제에 실패했습니다.' });
+            }
+            console.log('게시물이 성공적으로 삭제되었습니다.');
+            res.json({ success: true, message: '게시물이 성공적으로 삭제되었습니다.' });
+        });
+    });
+});
+
+app.post('/comments/:post_id', (req, res) => {
+    const { post_id } = req.params;
+    const { comment_name, content } = req.body;
+
+    // 댓글을 저장하는 쿼리 작성
+    const sql = 'INSERT INTO comment (post_id, comment_name, content) VALUES (?, ?, ?)';
+    
+    // 게시물에 댓글을 추가
+    db.query(sql, [post_id, comment_name, content], (err, result) => {
+        if (err) {
+            console.error('댓글 작성에 실패했습니다.', err);
+            return res.status(500).json({ error: '댓글 작성에 실패했습니다.' });
+        }
+        console.log('댓글이 성공적으로 작성되었습니다.');
+        res.json({ success: true, message: '댓글이 성공적으로 작성되었습니다.' });
+    });
+});
+
+app.get('/comments/:post_id', (req, res) => {
+    const { post_id } = req.params;
+
+    // 해당 게시물의 댓글을 가져오는 쿼리 작성
+    const sql = 'SELECT * FROM comment WHERE post_id = ?';
+
+    // 게시물의 댓글을 조회
+    db.query(sql, [post_id], (err, results) => {
+        if (err) {
+            console.error('댓글을 불러오는데 실패했습니다.', err);
+            return res.status(500).json({ error: '댓글을 불러오는데 실패했습니다.' });
+        }
+        res.json({ comments: results });
+    });
 });
 
 app.listen(8081, () => {
