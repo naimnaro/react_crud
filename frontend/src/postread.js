@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Table, ListGroup, Form, Button } from 'react-bootstrap';
 
-function PostRead({user}) {
+function PostRead({ user }) {
     const location = useLocation();
     const navigate = useNavigate();
     const post_id = new URLSearchParams(location.search).get('post_id');
@@ -80,16 +80,24 @@ function PostRead({user}) {
                         </tbody>
                     </Table>
                     <ListGroup className="mb-3">
-                    <Form.Label>댓글</Form.Label>
+                        <Form.Label>댓글</Form.Label>
                         {comments.map((comment, index) => (
-                            <ListGroup.Item key={index}>{comment.comment_name} : {comment.content}</ListGroup.Item>
+                            <ListGroup.Item key={index}>
+                                <div className="d-flex justify-content-between">
+                                    <span><b>{comment.comment_name} </b>: {comment.content}</span>
+                                    <div className="text-right">
+                                        <span>{comment.created_at}</span>
+                                    </div>
+                                </div>
+
+                            </ListGroup.Item>
                         ))}
                     </ListGroup>
                     <Form.Group controlId="newComment">
                         <Form.Label>댓글 작성</Form.Label>
                         <Form.Control as="textarea" rows={3} value={newComment} onChange={(e) => setNewComment(e.target.value)} />
                     </Form.Group>
-                    <Button variant="primary" className="mt-3"onClick={handleSubmitComment}>댓글 작성</Button>
+                    <Button variant="primary" className="mt-3" onClick={handleSubmitComment}>댓글 작성</Button>
                     <div className="d-flex justify-content-end mt-3">
                         <button type="button" className="btn btn-danger mb-3" onClick={handleCancel}>돌아가기</button>
                     </div>
