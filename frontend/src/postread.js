@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Table } from 'react-bootstrap'; // react-bootstrap에서 Table 컴포넌트를 import
+import { Table, ListGroup, Form, Button } from 'react-bootstrap';
 
-function PostRead() {
+function PostRead({ user }) {
     const location = useLocation();
     const navigate = useNavigate();
     const post_id = new URLSearchParams(location.search).get('post_id');
@@ -11,6 +11,17 @@ function PostRead() {
     const [content, setContent] = useState('');
     const [author, setAuthor] = useState('');
     const [createdAt, setCreatedAt] = useState('');
+    const [comments, setComments] = useState([]);
+    const [newComment, setNewComment] = useState('');
+
+    const fetchComments = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8081/comments/${post_id}`);
+            setComments(response.data.comments);
+        } catch (error) {
+            console.error('댓글을 불러오는데 실패했습니다.', error);
+        }
+    };
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -27,10 +38,21 @@ function PostRead() {
         };
 
         fetchPost();
+        fetchComments(); // fetchComments 함수를 여기서 호출
     }, [post_id]);
 
     const handleCancel = () => {
         navigate('/pagenation');
+    };
+
+    const handleSubmitComment = async () => {
+        try {
+            await axios.post(`http://localhost:8081/comments/${post_id}`, { content: newComment, comment_name: user.name });
+            setNewComment('');
+            fetchComments(); // 댓글 작성 후 댓글 목록을 다시 가져와서 업데이트
+        } catch (error) {
+            console.error('댓글 작성에 실패했습니다.', error);
+        }
     };
 
     return (
@@ -57,8 +79,27 @@ function PostRead() {
                             </tr>
                         </tbody>
                     </Table>
-                    <div className="d-flex justify-content-end">
-                        <button type="button" className="btn btn-danger" onClick={handleCancel}>돌아가기</button>
+                    <ListGroup className="mb-3">
+                        <Form.Label>댓글</Form.Label>
+                        {comments.map((comment, index) => (
+                            <ListGroup.Item key={index}>
+                                <div className="d-flex justify-content-between">
+                                    <span><b>{comment.comment_name} </b>: {comment.content}</span>
+                                    <div className="text-right">
+                                        <span>{comment.created_at}</span>
+                                    </div>
+                                </div>
+
+                            </ListGroup.Item>
+                        ))}
+                    </ListGroup>
+                    <Form.Group controlId="newComment">
+                        <Form.Label>댓글 작성</Form.Label>
+                        <Form.Control as="textarea" rows={3} value={newComment} onChange={(e) => setNewComment(e.target.value)} />
+                    </Form.Group>
+                    <Button variant="primary" className="mt-3" onClick={handleSubmitComment}>댓글 작성</Button>
+                    <div className="d-flex justify-content-end mt-3">
+                        <button type="button" className="btn btn-danger mb-3" onClick={handleCancel}>돌아가기</button>
                     </div>
                 </div>
             </div>
