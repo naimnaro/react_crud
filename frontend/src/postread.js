@@ -85,29 +85,27 @@ function PostRead({ user }) {
                     <ListGroup className="mb-3">
                         <Form.Label>댓글</Form.Label>
                         {comments.map((comment, index, post) => (
-                            <ListGroup.Item key={index}>
-                                <div className="d-flex justify-content-between">
-                                    <span><b>{comment.comment_name} </b>: {comment.content}</span>
-                                    <div className="text-right">
-                                        <span>{comment.created_at}</span>
-                                        <span className="ms-4">
-                                            {user && user.name === comment.comment_name ? (
-                                                <>
-                                                    <Button variant="dark" size="sm" className="me-1">수정</Button>
-                                                    <Button variant="danger" size="sm" className="me-1">삭제</Button>
-                                                </>
-                                            ) : (
-                                                <> {/* 빈 요소를 렌더링하여 공간을 유지합니다 */}
-                                                    <Button variant="dark" size="sm" className="invisible">수정</Button>
-                                                    <Button variant="danger" size="sm" className="invisible">삭제</Button>
-                                                </>
-                                            )}
-
-                                        </span>
-
+                            <ListGroup.Item key={index} className="d-flex justify-content-between align-items-start">
+                                <div className="flex-grow-1">
+                                    <div><b>{comment.comment_name}</b>:</div>
+                                    <div style={{ whiteSpace: 'pre-wrap' }}>{comment.content}</div>
+                                </div>
+                                <div className="ms-2" style={{ whiteSpace: 'nowrap' }}>
+                                    <div>{comment.created_at}</div>
+                                    <div>
+                                        {user && user.name === comment.comment_name ? (
+                                            <>
+                                                <Button variant="dark" size="sm" className="me-1">수정</Button>
+                                                <Button variant="danger" size="sm" className="me-1">삭제</Button>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Button variant="dark" size="sm" className="invisible">수정</Button>
+                                                <Button variant="danger" size="sm" className="invisible">삭제</Button>
+                                            </>
+                                        )}
                                     </div>
                                 </div>
-
                             </ListGroup.Item>
                         ))}
                     </ListGroup>
