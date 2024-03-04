@@ -87,6 +87,7 @@ function PostRead({ user }) {
                                     <span><b>{comment.comment_name} </b>: {comment.content}</span>
                                     <div className="text-right">
                                         <span>{comment.created_at}</span>
+                                        
                                     </div>
                                 </div>
 

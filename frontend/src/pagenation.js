@@ -71,11 +71,11 @@ function PaginationComponent({ user }) {
             <Table striped bordered hover>
                 <thead>
                     <tr>
-                        <th style={{ width: '10%' }}>번호</th>
-                        <th style={{ width: '20%' }}>제목</th>
+                        <th style={{ width: '4%' }}>번호</th>
+                        <th style={{ width: '36%' }}>제목</th>
                         <th style={{ width: '20%' }}>작성자</th>
-                        <th style={{ width: '40%' }}>작성일자</th>
-                        <th style={{ width: '30%' }}></th>
+                        <th style={{ width: '30%' }}>작성일자</th>
+                        <th style={{ width: '10%' }}></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -85,11 +85,11 @@ function PaginationComponent({ user }) {
                             <td onClick={() => handleCardClick(post.post_id)} >{post.title}</td>
                             <td>{post.author_name}</td>
                             <td>{post.created_at}</td>
-                            <td>
+                            <td  style={{ textAlign: 'center' }}>
                                 {user && user.name === post.author_name && (
                                     <>
-                                        <Button variant="primary" size="sm" className="" onClick={(e) => { e.stopPropagation(); handleEditPost(post.post_id); }}>수정</Button>
-                                        <Button variant="danger" size="sm" onClick={(e) => { e.stopPropagation(); handleDeletePost(post.post_id, post.author_name); }}>삭제</Button>
+                                        <Button variant="primary" size="sm" className="me-1" onClick={(e) => { e.stopPropagation(); handleEditPost(post.post_id); }}>수정</Button>
+                                        <Button variant="danger" size="sm" className="me-1" onClick={(e) => { e.stopPropagation(); handleDeletePost(post.post_id, post.author_name); }}>삭제</Button>
                                     </>
                                 )}
                             </td>
