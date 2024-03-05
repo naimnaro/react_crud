@@ -96,10 +96,12 @@ function PostRead({ user }) {
                     <ListGroup className='mb-2'>
                         <Form.Label>댓글</Form.Label>
                         {comments.map((comment, index, post) => (
-                            <ListGroup.Item key={index} className="d-flex justify-content-end align-items-start">
-                                <div className="flex-grow-1" style={{ whiteSpace: 'nowrap' }}>
-                                    <div><b>{comment.comment_name}</b> | {comment.created_at} </div>
-
+                            <ListGroup.Item key={index} className="d-flex align-items-start">
+                                <div className="flex-grow-1" style={{ whiteSpace: 'nowrap', }}>
+                                    <div className="d-flex justify-content-between" style={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)' }}>
+                                        <b>{comment.comment_name}</b>
+                                        <span>{comment.created_at}</span>
+                                    </div>
                                     <div style={{ whiteSpace: 'pre-wrap' }}>{comment.content}</div>
                                     <div className="d-flex justify-content-end align-items-start">
                                         {user && user.name === comment.comment_name ? (
@@ -112,7 +114,8 @@ function PostRead({ user }) {
 
                                                 <Button variant="danger" style={{ padding: '0.25rem 0.25rem', fontSize: '0.75rem' }} className="invisible">삭제</Button>
                                             </>
-                                        )}</div>
+                                        )}
+                                    </div>
                                 </div>
                             </ListGroup.Item>
                         ))}
