@@ -58,6 +58,17 @@ function PostRead({ user }) {
         }
     };
 
+    const handleDeleteComment = async (comment_id) => {
+        try {
+            // 서버에 삭제 요청을 보냄
+            await axios.delete(`http://localhost:8081/comments/${comment_id}`);
+            // 댓글 목록을 다시 가져와서 업데이트
+            fetchComments();
+        } catch (error) {
+            console.error('댓글 삭제에 실패했습니다.', error);
+        }
+    };
+
     return (
         <div className="container mt-5">
             <div className="row justify-content-center">
@@ -95,13 +106,13 @@ function PostRead({ user }) {
                                     <div className="d-flex justify-content-end">
                                         {user && user.name === comment.comment_name ? (
                                             <>
-                                                <Button variant="dark" style={{ padding: '0.25rem 0.25rem', fontSize: '0.75rem' }} className="me-1">수정</Button>
-                                                <Button variant="danger" style={{ padding: '0.25rem 0.25rem', fontSize: '0.75rem' }} className="me-1">삭제</Button>
+                                                <Button variant="danger" style={{padding:'0.25rem 0.25rem',fontSize:'0.75rem'}}
+                                                 className="me-1"onClick={() => handleDeleteComment(comment.comment_id)} > 삭제 </Button>
                                             </>
                                         ) : (
                                             <>
-                                                <Button variant="dark" style={{ padding: '0.25rem 0.25rem', fontSize: '0.75rem' }} className="invisible">수정</Button>
-                                                <Button variant="danger" style={{ padding: '0.25rem 0.25rem', fontSize: '0.75rem' }} className="invisible">삭제</Button>
+                                            
+                                                <Button variant="danger" style={{padding:'0.25rem 0.25rem',fontSize:'0.75rem'}}className="invisible">삭제</Button>
                                             </>
                                         )}
                                     </div>

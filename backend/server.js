@@ -266,6 +266,23 @@ app.get('/comments/:post_id', (req, res) => {    //댓글 표시
     });
 });
 
+
+app.delete('/comments/:comment_id', (req, res) => {   // 댓글 삭제
+    const comment_id = req.params.comment_id;
+
+    // 해당 comment_id에 해당하는 댓글을 삭제하는 쿼리 작성
+    const sql = 'DELETE FROM comment WHERE comment_id = ?';
+
+    // 댓글 삭제 실행
+    db.query(sql, [comment_id], (err, result) => {
+        if (err) {
+            console.error('댓글 삭제에 실패했습니다.', err);
+            return res.status(500).json({ error: '댓글 삭제에 실패했습니다.' });
+        }
+        console.log('댓글이 성공적으로 삭제되었습니다.');
+        res.json({ success: true, message: '댓글이 성공적으로 삭제되었습니다.' });
+    });
+});
 app.listen(8081, () => {
     console.log("Server is running on port 8081");
 });
