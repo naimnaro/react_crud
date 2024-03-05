@@ -82,10 +82,10 @@ function PaginationComponent({ user }) {
                     {posts.map((post) => (
                         <tr key={post.post_id}>
                             <td className="text-center" >{post.post_id}</td>
-                            <td onClick={() => handleCardClick(post.post_id)} >{post.title}</td>
+                            <td style={{ whiteSpace: 'nowrap' }} onClick={() => handleCardClick(post.post_id)}>{post.title}</td>
                             <td>{post.author_name}</td>
-                            <td>{post.created_at}</td>
-                            <td  style={{ textAlign: 'center' }}>
+                            <td style={{ whiteSpace: 'nowrap' }}>{post.created_at}</td>
+                            <td  style={{ textAlign: 'center', whiteSpace: 'nowrap' }}>
                                 {user && user.name === post.author_name && (
                                     <>
                                         <Button variant="primary" size="sm" className="me-1" onClick={(e) => { e.stopPropagation(); handleEditPost(post.post_id); }}>수정</Button>

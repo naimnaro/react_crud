@@ -95,13 +95,13 @@ function PostRead({ user }) {
                                     <div>
                                         {user && user.name === comment.comment_name ? (
                                             <>
-                                                <Button variant="dark" size="sm" className="me-1">수정</Button>
-                                                <Button variant="danger" size="sm" className="me-1">삭제</Button>
+                                                <Button variant="dark" style={{ padding: '0.25rem 0.25rem', fontSize: '0.75rem' }} className="me-1">수정</Button>
+                                                <Button variant="danger" style={{ padding: '0.25rem 0.25rem', fontSize: '0.75rem' }} className="me-1">삭제</Button>
                                             </>
                                         ) : (
                                             <>
-                                                <Button variant="dark" size="sm" className="invisible">수정</Button>
-                                                <Button variant="danger" size="sm" className="invisible">삭제</Button>
+                                                <Button variant="dark" style={{ padding: '0.25rem 0.25rem', fontSize: '0.75rem' }} className="invisible">수정</Button>
+                                                <Button variant="danger" style={{ padding: '0.25rem 0.25rem', fontSize: '0.75rem' }} className="invisible">삭제</Button>
                                             </>
                                         )}
                                     </div>
