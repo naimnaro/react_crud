@@ -87,12 +87,12 @@ function PostRead({ user }) {
                         {comments.map((comment, index, post) => (
                             <ListGroup.Item key={index} className="d-flex justify-content-between align-items-start">
                                 <div className="flex-grow-1">
-                                    <div><b>{comment.comment_name}</b>:</div>
+                                    <div><b>{comment.comment_name}</b></div>
                                     <div style={{ whiteSpace: 'pre-wrap' }}>{comment.content}</div>
                                 </div>
                                 <div className="ms-2" style={{ whiteSpace: 'nowrap' }}>
                                     <div>{comment.created_at}</div>
-                                    <div>
+                                    <div className="d-flex justify-content-end">
                                         {user && user.name === comment.comment_name ? (
                                             <>
                                                 <Button variant="dark" style={{ padding: '0.25rem 0.25rem', fontSize: '0.75rem' }} className="me-1">수정</Button>

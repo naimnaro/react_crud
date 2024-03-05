@@ -10,7 +10,7 @@ app.use(express.json());
 
 const db = mysql.createConnection(dbConfig);
 
-app.post('/signup', [
+app.post('/signup', [         //회원가입 
     // 사용자가 제공한 데이터의 유효성을 검사하는 미들웨어 추가
     check('name').notEmpty(),
     check('email').isEmail(),
@@ -63,7 +63,7 @@ app.post('/signup', [
     });
 });
 
-app.post('/login', [
+app.post('/login', [              //로그인
     check('email').isEmail(),
     check('password').isLength({ min: 8 })
 ], (req, res) => {
@@ -89,7 +89,7 @@ app.post('/login', [
     });
 });
 
-app.post('/post', (req, res) => {
+app.post('/post', (req, res) => {  // 게시글 작성
     const { title, content, author_name } = req.body; // 클라이언트로부터 제목, 내용, 작성자 ID를 받아옵니다.
     const sql = 'INSERT INTO post (title, content, author_name) VALUES (?, ?, ?)';
     db.query(sql, [title, content, author_name], (err, result) => {
@@ -103,7 +103,7 @@ app.post('/post', (req, res) => {
   });
 
 
-  app.get('/post', (req, res) => {
+  app.get('/post', (req, res) => {    // 게시글 표시 (불러오기)
     // DB에서 모든 게시물을 가져와서 클라이언트에 응답으로 보냅니다.
     db.query('SELECT * FROM post', (err, results) => {
       if (err) {
@@ -114,7 +114,7 @@ app.post('/post', (req, res) => {
     });
   });
 
-  app.get('/post2', (req, res) => {
+  app.get('/post2', (req, res) => {           // 페이지네이션
     const page = parseInt(req.query.page) || 1; // 요청된 페이지 번호, 기본값은 1
     const pageSize = 10; // 페이지 크기, 한 페이지당 10개의 게시글
   
@@ -205,7 +205,7 @@ app.put('/postedit/:post_id', (req, res) => {
   });
 });
 
-app.delete('/post/:post_id', (req, res) => {
+app.delete('/post/:post_id', (req, res) => {   // 게시글,댓글 삭제 
     const post_id = req.params.post_id;
 
     // 먼저 해당 게시글과 연결된 모든 댓글을 삭제합니다.
@@ -232,7 +232,7 @@ app.delete('/post/:post_id', (req, res) => {
     });
 });
 
-app.post('/comments/:post_id', (req, res) => {
+app.post('/comments/:post_id', (req, res) => {   //댓글 작성 
     const { post_id } = req.params;
     const { comment_name, content } = req.body;
 
@@ -250,7 +250,7 @@ app.post('/comments/:post_id', (req, res) => {
     });
 });
 
-app.get('/comments/:post_id', (req, res) => {
+app.get('/comments/:post_id', (req, res) => {    //댓글 표시 
     const { post_id } = req.params;
 
     // 해당 게시물의 댓글을 가져오는 쿼리 작성
