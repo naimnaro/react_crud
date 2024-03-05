@@ -11,8 +11,20 @@ function PostRead({ user }) {
     const [content, setContent] = useState('');
     const [author, setAuthor] = useState('');
     const [createdAt, setCreatedAt] = useState('');
+    const [views, setViews] = useState(0);
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
+
+    const formatDateTime = (dateTimeString) => {
+        const dateTime = new Date(dateTimeString);
+        const year = dateTime.getFullYear();
+        const month = (dateTime.getMonth() + 1).toString().padStart(2, '0');
+        const day = dateTime.getDate().toString().padStart(2, '0');
+        const hour = dateTime.getHours().toString().padStart(2, '0');
+        const minute = dateTime.getMinutes().toString().padStart(2, '0');
+        
+        return `${year}-${month}-${day} | ${hour}:${minute}`;
+    };
 
     const fetchComments = async () => {
         try {
@@ -23,26 +35,30 @@ function PostRead({ user }) {
         }
     };
 
-    useEffect(() => {
-        const fetchPost = async () => {
-            try {
-                const response = await axios.get(`http://localhost:8081/postedit/${post_id}`);
-                const postData = response.data;
-                setTitle(postData.title);
-                setContent(postData.content);
-                setAuthor(postData.author_name);
-                setCreatedAt(postData.created_at);
-            } catch (error) {
-                console.error('게시글을 불러오는데 실패했습니다.', error);
-            }
-        };
+    const fetchPost = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8081/postedit/${post_id}`);
+            const postData = response.data;
+            setTitle(postData.title);
+            setContent(postData.content);
+            setAuthor(postData.author_name);
+            setCreatedAt(formatDateTime(postData.created_at)); // 변경된 부분
+            setViews(postData.views);
 
+            // 조회수 증가 요청
+            await axios.post(`http://localhost:8081/post/${post_id}/views`);
+        } catch (error) {
+            console.error('게시글을 불러오는데 실패했습니다.', error);
+        }
+    };
+
+    useEffect(() => {
         fetchPost();
-        fetchComments(); // fetchComments 함수를 여기서 호출
+        fetchComments();
         if (user !== null) {
             console.log("User:", user.name);
         }
-    }, [post_id, user]);
+    }, []);
 
     const handleCancel = () => {
         navigate('/pagenation');
@@ -52,7 +68,7 @@ function PostRead({ user }) {
         try {
             await axios.post(`http://localhost:8081/comments/${post_id}`, { content: newComment, comment_name: user.name });
             setNewComment('');
-            fetchComments(); // 댓글 작성 후 댓글 목록을 다시 가져와서 업데이트
+            fetchComments();
         } catch (error) {
             console.error('댓글 작성에 실패했습니다.', error);
         }
@@ -60,9 +76,7 @@ function PostRead({ user }) {
 
     const handleDeleteComment = async (comment_id) => {
         try {
-            // 서버에 삭제 요청을 보냄
             await axios.delete(`http://localhost:8081/comments/${comment_id}`);
-            // 댓글 목록을 다시 가져와서 업데이트
             fetchComments();
         } catch (error) {
             console.error('댓글 삭제에 실패했습니다.', error);
@@ -87,6 +101,10 @@ function PostRead({ user }) {
                                 <td>{createdAt}</td>
                             </tr>
                             <tr>
+                                <td>조회수</td>
+                                <td>{views}</td>
+                            </tr>
+                            <tr>
                                 <td colSpan="2">
                                     <textarea id="content" className="form-control" style={{ height: '400px' }} value={content} readOnly />
                                 </td>
@@ -97,12 +115,12 @@ function PostRead({ user }) {
                         <Form.Label>댓글</Form.Label>
                         {comments.map((comment, index, post) => (
                             <ListGroup.Item key={index} className="d-flex align-items-start">
-                                <div className="flex-grow-1" style={{ whiteSpace: 'nowrap', }}>
+                                <div className="flex-grow-1" style={{ whiteSpace: 'nowrap' }}>
                                     <div className="d-flex justify-content-between" style={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)' }}>
-                                        <b>{comment.comment_name}</b>
-                                        <span>{comment.created_at}</span>
+                                        <b className="mb-1">{comment.comment_name}</b>
+                                        <span className="mb-1">{formatDateTime(comment.created_at)}</span>
                                     </div>
-                                    <div style={{ whiteSpace: 'pre-wrap' }}>{comment.content}</div>
+                                    <div className="mt-1" style={{ whiteSpace: 'pre-wrap' }}>{comment.content}</div>
                                     <div className="d-flex justify-content-end align-items-start">
                                         {user && user.name === comment.comment_name ? (
                                             <>

@@ -11,6 +11,18 @@ function PaginationComponent({ user }) {
     const [totalPages, setTotalPages] = useState(1);
     const navigate = useNavigate();
 
+    const formatDateTime = (dateTimeString) => {
+        const dateTime = new Date(dateTimeString);
+        const year = dateTime.getFullYear();
+        const month = (dateTime.getMonth() + 1).toString().padStart(2, '0');
+        const day = dateTime.getDate().toString().padStart(2, '0');
+        const hour = dateTime.getHours() > 12 ? (dateTime.getHours() - 12).toString().padStart(2, '0') : dateTime.getHours().toString().padStart(2, '0');
+        const minute = dateTime.getMinutes().toString().padStart(2, '0');
+        const ampm = dateTime.getHours() >= 12 ? '오후' : '오전';
+        
+        return `${year}-${month}-${day} | ${ampm} ${hour}:${minute}`;
+    };
+
     useEffect(() => {
         fetchPosts();
         if (user !== null) {
@@ -21,7 +33,11 @@ function PaginationComponent({ user }) {
     const fetchPosts = async () => {
         try {
             const response = await axios.get(`http://localhost:8081/post2?page=${currentPage}`);
-            setPosts(response.data.post);
+            const formattedPosts = response.data.post.map(post => ({
+                ...post,
+                created_at: formatDateTime(post.created_at)
+            }));
+            setPosts(formattedPosts);
             setTotalPages(response.data.totalPages);
         } catch (error) {
             console.error('게시물을 불러오는데 실패했습니다.', error);
@@ -67,29 +83,31 @@ function PaginationComponent({ user }) {
 
     return (
         <div className="container mt-2">
-            <h2 className="text-center mb-4 mt-4">게시물 목록</h2>
-            <Table striped bordered hover>
+            <h2 className="text-center mb-4 mt-4" style={{ whiteSpace: 'nowrap' }}>게시물 목록</h2>
+            <Table striped bordered hover style={{ whiteSpace: 'nowrap' }}>
                 <thead>
                     <tr>
                         <th style={{ width: '4%' }}>번호</th>
-                        <th style={{ width: '36%' }}>제목</th>
+                        <th style={{ width: '32%' }}>제목</th>
                         <th style={{ width: '20%' }}>작성자</th>
                         <th style={{ width: '30%' }}>작성일자</th>
+                        <th style={{ width: '4%' }}>조회수</th>
                         <th style={{ width: '10%' }}></th>
                     </tr>
                 </thead>
                 <tbody>
                     {posts.map((post) => (
                         <tr key={post.post_id}>
-                            <td className="text-center" >{post.post_id}</td>
+                            <td style={{ whiteSpace: 'nowrap' }} className="text-center" >{post.post_id}</td>
                             <td style={{ whiteSpace: 'nowrap' }} onClick={() => handleCardClick(post.post_id)}>{post.title}</td>
-                            <td>{post.author_name}</td>
+                            <td style={{ whiteSpace: 'nowrap' }}>{post.author_name}</td>
                             <td style={{ whiteSpace: 'nowrap' }}>{post.created_at}</td>
-                            <td  style={{ textAlign: 'center', whiteSpace: 'nowrap' }}>
+                            <td style={{ whiteSpace: 'nowrap' }} className="text-center">{post.views}</td>
+                            <td style={{ textAlign: 'center', whiteSpace: 'nowrap' }}>
                                 {user && user.name === post.author_name && (
                                     <>
-                                        <Button variant="primary" size="sm" className="me-1" onClick={(e) => { e.stopPropagation(); handleEditPost(post.post_id); }}>수정</Button>
-                                        <Button variant="danger" size="sm" className="me-1" onClick={(e) => { e.stopPropagation(); handleDeletePost(post.post_id, post.author_name); }}>삭제</Button>
+                                        <Button variant="primary" size="sm" className="me-1" onClick={(e) => {e.stopPropagation(); handleEditPost(post.post_id); }}>수정</Button>
+                                        <Button variant="danger" size="sm" className="me-1" onClick={(e) => {e.stopPropagation(); handleDeletePost(post.post_id, post.author_name); }}>삭제</Button>
                                     </>
                                 )}
                             </td>
@@ -98,8 +116,8 @@ function PaginationComponent({ user }) {
                 </tbody>
             </Table>
 
-            <div className="pagination d-flex justify-content-center mt-4">
-                <Pagination>
+            <div className="pagination d-flex justify-content-center mt-4"style={{ whiteSpace: 'nowrap' }}>
+                <Pagination style={{ whiteSpace: 'nowrap' }}>
                     <Pagination.Prev disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)} />
                     {[...Array(totalPages)].map((_, index) => (
                         <Pagination.Item key={index + 1} active={currentPage === index + 1} onClick={() => handlePageChange(index + 1)}>
@@ -111,7 +129,7 @@ function PaginationComponent({ user }) {
                 
             </div>
 
-            <div className="d-flex justify-content-end mb-4">
+            <div className="d-flex justify-content-end mb-4" style={{ whiteSpace: 'nowrap' }}>
                 <button className="btn btn-primary me-2" onClick={handletoPost}>게시글 작성</button>
                 <button className="btn btn-secondary" onClick={handletoHome}>Home</button>
             </div>
