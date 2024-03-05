@@ -93,30 +93,26 @@ function PostRead({ user }) {
                             </tr>
                         </tbody>
                     </Table>
-                    <ListGroup className="mb-3">
+                    <ListGroup className='mb-2'>
                         <Form.Label>댓글</Form.Label>
                         {comments.map((comment, index, post) => (
-                            <ListGroup.Item key={index} className="d-flex justify-content-between align-items-start">
+                            <ListGroup.Item key={index} className="d-flex justify-content-end align-items-start">
                                 <div className="flex-grow-1" style={{ whiteSpace: 'nowrap' }}>
                                     <div><b>{comment.comment_name}</b> | {comment.created_at} </div>
-                                    
+
                                     <div style={{ whiteSpace: 'pre-wrap' }}>{comment.content}</div>
-                                </div>
-                                <div className="ms-2" style={{ whiteSpace: 'nowrap' }}>
-                            
-                                    <div className="d-flex justify-content-end">
+                                    <div className="d-flex justify-content-end align-items-start">
                                         {user && user.name === comment.comment_name ? (
                                             <>
-                                                <Button variant="danger" style={{padding:'0.25rem 0.25rem',fontSize:'0.75rem'}}
-                                                 className="ms-4"onClick={() => handleDeleteComment(comment.comment_id)} > 삭제 </Button>
+                                                <Button variant="danger" style={{ padding: '0.25rem 0.25rem', fontSize: '0.75rem' }}
+                                                    className="ms-2" onClick={() => handleDeleteComment(comment.comment_id)} > 삭제 </Button>
                                             </>
                                         ) : (
                                             <>
-                                            
-                                                <Button variant="danger" style={{padding:'0.25rem 0.25rem',fontSize:'0.75rem'}}className="invisible">삭제</Button>
+
+                                                <Button variant="danger" style={{ padding: '0.25rem 0.25rem', fontSize: '0.75rem' }} className="invisible">삭제</Button>
                                             </>
-                                        )}
-                                    </div>
+                                        )}</div>
                                 </div>
                             </ListGroup.Item>
                         ))}
