@@ -82,14 +82,25 @@ function PaginationComponent({ user }) {
     };
 
     const handleSearch = async () => {
+        if (searchTerm.length < 2) {
+            console.log("두 글자 이상의 검색어를 입력하세요.");
+            return; // 두 글자 미만인 경우 검색을 진행하지 않음
+        }
         try {
             const response = await axios.get(`http://localhost:8081/post/search?term=${searchTerm}`);
-            const formattedPosts = response.data.post.map(post => ({
-                ...post,
-                created_at: formatDateTime(post.created_at)
-            }));
-            setPosts(formattedPosts);
-            setTotalPages(response.data.totalPages);
+            
+            // 응답 데이터의 구조를 확인하고 처리
+            if (response.data && response.data.length > 0) {
+                const formattedPosts = response.data.map(post => ({
+                    ...post,
+                    created_at: formatDateTime(post.created_at)
+                }));
+                setPosts(formattedPosts);
+                setTotalPages(1); // 검색 결과는 한 페이지에 모두 표시되므로 totalPages를 1로 설정
+            } else {
+                console.error('검색 결과가 없습니다.');
+                // 검색 결과가 없는 경우에 대한 처리
+            }
         } catch (error) {
             console.error('검색에 실패했습니다.', error);
         }
