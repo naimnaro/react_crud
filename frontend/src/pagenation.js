@@ -9,6 +9,7 @@ function PaginationComponent({ user }) {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
+    const [originalPosts, setOriginalPosts] = useState([]);
     const navigate = useNavigate();
 
     const formatDateTime = (dateTimeString) => {
@@ -38,6 +39,7 @@ function PaginationComponent({ user }) {
                 created_at: formatDateTime(post.created_at)
             }));
             setPosts(formattedPosts);
+            setOriginalPosts(formattedPosts);
             setTotalPages(response.data.totalPages);
         } catch (error) {
             console.error('게시물을 불러오는데 실패했습니다.', error);
@@ -82,14 +84,23 @@ function PaginationComponent({ user }) {
     };
 
     const handleSearch = async () => {
+        if (searchTerm.trim() === "") {
+            // 검색어가 공백이거나 빈 문자열인 경우에는 기존의 테이블로 복구합니다.
+            setPosts(originalPosts);
+            return;
+        }
+    
         if (searchTerm.length < 2) {
+            alert("두 글자 이상의 검색어를 입력하세요.");
             console.log("두 글자 이상의 검색어를 입력하세요.");
             return; // 두 글자 미만인 경우 검색을 진행하지 않음
         }
+        
         try {
             const response = await axios.get(`http://localhost:8081/post/search?term=${searchTerm}`);
-            
+    
             // 응답 데이터의 구조를 확인하고 처리
+            
             if (response.data && response.data.length > 0) {
                 const formattedPosts = response.data.map(post => ({
                     ...post,
@@ -98,31 +109,41 @@ function PaginationComponent({ user }) {
                 setPosts(formattedPosts);
                 setTotalPages(1); // 검색 결과는 한 페이지에 모두 표시되므로 totalPages를 1로 설정
             } else {
+                alert("검색 결과가 없습니다.");
                 console.error('검색 결과가 없습니다.');
                 // 검색 결과가 없는 경우에 대한 처리
             }
         } catch (error) {
+            alert("검색에 실패했습니다.");
             console.error('검색에 실패했습니다.', error);
         }
     };
-
+    
     return (
         <>
             <Navbar bg="dark" variant="dark">
+                <Navbar.Brand className="mx-3"> naimnaro </Navbar.Brand>
                 <Navbar.Collapse className="justify-content-end">
-                    <Form className="d-flex mr-auto mx-2">
-                    <Form.Control
-                        type="text"
-                        placeholder="검색어 입력"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        style={{ maxWidth: '400px' }} // 너비 조정
-                    />
-                    <Button variant="btn btn-secondary ml-2 mx-1" onClick={handleSearch}>Search</Button>
-                    <button className="btn btn-secondary" onClick={handletoHome}>Home</button>
-                </Form>
+                    
+                    <Form className="d-flex mr-auto mx-2" onSubmit={(e) => e.preventDefault()}>
+                        
+                        <Form.Control
+                            type="text"
+                            placeholder="검색어 입력"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            onKeyPress={(e) => {
+                                if (e.key === 'Enter') {
+                                    e.preventDefault(); // 폼 제출 방지
+                                    handleSearch(); // Search 함수 호출
+                                }
+                            }}
+                            style={{ maxWidth: '400px' }} // 너비 조정
+                        />
+                        <Button variant="btn btn-secondary ml-2 mx-1" onClick={handleSearch}>Search</Button>
+                        <button className="btn btn-secondary" onClick={handletoHome}>Home</button>
+                    </Form>
                 </Navbar.Collapse>
-                
             </Navbar>
             <Container fluid style={{ whiteSpace: 'pre' }}>
                 <Row>
