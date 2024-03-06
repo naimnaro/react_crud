@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Pagination, Table, Button, Navbar, Container, Row, Col } from 'react-bootstrap';
+import { Pagination, Table, Button, Navbar, Container, Row, Col, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
 
 function PaginationComponent({ user }) {
-
     const [posts, setPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
 
     const formatDateTime = (dateTimeString) => {
@@ -81,71 +81,98 @@ function PaginationComponent({ user }) {
         }
     };
 
+    const handleSearch = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8081/post/search?term=${searchTerm}`);
+            const formattedPosts = response.data.post.map(post => ({
+                ...post,
+                created_at: formatDateTime(post.created_at)
+            }));
+            setPosts(formattedPosts);
+            setTotalPages(response.data.totalPages);
+        } catch (error) {
+            console.error('검색에 실패했습니다.', error);
+        }
+    };
+
     return (
-        <Container fluid style={{ whiteSpace: 'nowrap' }}>
+        <>
             <Navbar bg="dark" variant="dark">
-                <Navbar.Brand>React_Crud_Operations</Navbar.Brand>
-            </Navbar>
-            <Row>
-                <Col>
-                    <h2 className="text-center mb-4 mt-4">게시물 목록</h2>
-                    <div style={{ overflowX: 'auto' }}>
-                        <Table striped bordered hover style={{ whiteSpace: 'nowrap' }}>
-                            <thead>
-                                <tr className="text-center">
-                                    <th style={{ width: '4%' }}>번호</th>
-                                    <th style={{ width: '32%' }}>제목</th>
-                                    <th style={{ width: '20%' }}>작성자</th>
-                                    <th style={{ width: '30%' }}>작성일자</th>
-                                    <th style={{ width: '4%' }}>조회수</th>
-                                    <th style={{ width: '10%' }}>비고</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {posts.map((post) => (
-                                    <tr key={post.post_id} className="text-center">
-                                        <td className="text-center">{post.post_id}</td>
-                                        <td onClick={() => handleCardClick(post.post_id)}>{post.title}</td>
-                                        <td>{post.author_name}</td>
-                                        <td>{post.created_at}</td>
-                                        <td >{post.views}</td>
-                                        <td style={{ textAlign: 'center' }}>
-                                            {user && user.name === post.author_name && (
-                                                <>
-                                                    <Button variant="primary" size="sm" className="me-1" onClick={(e) => { e.stopPropagation(); handleEditPost(post.post_id); }}>수정</Button>
-                                                    <Button variant="danger" size="sm" className="me-1" onClick={(e) => { e.stopPropagation(); handleDeletePost(post.post_id, post.author_name); }}>삭제</Button>
-                                                </>
-                                            )}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </Table>
-                    </div>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <div className="pagination d-flex justify-content-center mt-4" style={{ whiteSpace: 'nowrap' }}>
-                        <Pagination style={{ whiteSpace: 'nowrap' }}>
-                            <Pagination.Prev disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)} />
-                            {[...Array(totalPages)].map((_, index) => (
-                                <Pagination.Item key={index + 1} active={currentPage === index + 1} onClick={() => handlePageChange(index + 1)}>
-                                    {index + 1}
-                                </Pagination.Item>
-                            ))}
-                            <Pagination.Next disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)} />
-                        </Pagination>
-                    </div>
-                </Col>
-            </Row>
-            <Row>
-                <Col className="d-flex justify-content-end mb-8">
-                    <button className="btn btn-primary me-2" onClick={handletoPost}>게시글 작성</button>
+                <Form className="d-flex mx-2">
+                    <Form.Control
+                        type="text"
+                        placeholder="검색어 입력"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        style={{ maxWidth: '200px' }} // 너비 조정
+                    />
+                    <Button variant="btn btn-secondary mx-2" onClick={handleSearch}>검색</Button>
+                </Form>
+                <Navbar.Collapse className="justify-content-end mx-2">
                     <button className="btn btn-secondary" onClick={handletoHome}>Home</button>
-                </Col>
-            </Row>
-        </Container>
+                </Navbar.Collapse>
+            </Navbar>
+            <Container fluid style={{ whiteSpace: 'pre' }}>
+                <Row>
+                    <Col>
+                        <h2 className="text-center mb-4 mt-4">게시물 목록</h2>
+                        <div style={{ overflowX: 'auto' }}>
+                            <Table striped bordered hover style={{ }}>
+                                <thead>
+                                    <tr className="text-center">
+                                        <th style={{ width: '4%' }}>번호</th>
+                                        <th style={{ width: '32%' }}>제목</th>
+                                        <th style={{ width: '20%' }}>작성자</th>
+                                        <th style={{ width: '30%' }}>작성일자</th>
+                                        <th style={{ width: '4%' }}>조회수</th>
+                                        <th style={{ width: '10%' }}>비고</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {posts.map((post) => (
+                                        <tr key={post.post_id} className="text-center">
+                                            <td className="text-center">{post.post_id}</td>
+                                            <td onClick={() => handleCardClick(post.post_id)}>{post.title}</td>
+                                            <td>{post.author_name}</td>
+                                            <td>{post.created_at}</td>
+                                            <td >{post.views}</td>
+                                            <td style={{ textAlign: 'center' }}>
+                                                {user && user.name === post.author_name && (
+                                                    <>
+                                                        <Button variant="primary" size="sm" className="me-1" onClick={(e) => { e.stopPropagation(); handleEditPost(post.post_id); }}>수정</Button>
+                                                        <Button variant="danger" size="sm" className="me-1" onClick={(e) => { e.stopPropagation(); handleDeletePost(post.post_id, post.author_name); }}>삭제</Button>
+                                                    </>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </Table>
+                        </div>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <div className="pagination d-flex justify-content-center mt-4" style={{ whiteSpace: 'nowrap' }}>
+                            <Pagination style={{ whiteSpace: 'nowrap' }}>
+                                <Pagination.Prev disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)} />
+                                {[...Array(totalPages)].map((_, index) => (
+                                    <Pagination.Item key={index + 1} active={currentPage === index + 1} onClick={() => handlePageChange(index + 1)}>
+                                        {index + 1}
+                                    </Pagination.Item>
+                                ))}
+                                <Pagination.Next disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)} />
+                            </Pagination>
+                        </div>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col className="d-flex justify-content-end mb-4">
+                        <button className="btn btn-primary me-2" onClick={handletoPost}>글작성</button>
+                    </Col>
+                </Row>
+            </Container>
+        </>
     );
 }
 
