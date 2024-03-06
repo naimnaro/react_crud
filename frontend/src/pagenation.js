@@ -98,26 +98,27 @@ function PaginationComponent({ user }) {
     return (
         <>
             <Navbar bg="dark" variant="dark">
-                <Form className="d-flex mx-2">
+                <Navbar.Collapse className="justify-content-end">
+                    <Form className="d-flex mr-auto mx-2">
                     <Form.Control
                         type="text"
                         placeholder="검색어 입력"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        style={{ maxWidth: '200px' }} // 너비 조정
+                        style={{ maxWidth: '400px' }} // 너비 조정
                     />
-                    <Button variant="btn btn-secondary mx-2" onClick={handleSearch}>검색</Button>
-                </Form>
-                <Navbar.Collapse className="justify-content-end mx-2">
+                    <Button variant="btn btn-secondary ml-2 mx-1" onClick={handleSearch}>Search</Button>
                     <button className="btn btn-secondary" onClick={handletoHome}>Home</button>
+                </Form>
                 </Navbar.Collapse>
+                
             </Navbar>
             <Container fluid style={{ whiteSpace: 'pre' }}>
                 <Row>
                     <Col>
                         <h2 className="text-center mb-4 mt-4">게시물 목록</h2>
                         <div style={{ overflowX: 'auto' }}>
-                            <Table striped bordered hover style={{ }}>
+                            <Table striped bordered hover style={{}}>
                                 <thead>
                                     <tr className="text-center">
                                         <th style={{ width: '4%' }}>번호</th>

@@ -303,6 +303,21 @@ app.post('/post/:postId/views', async (req, res) => {
         res.status(500).json({ error: '게시글 조회수 증가 중 오류 발생' });
     }
 });
+
+app.post('/post/search', (req, res) => {         // 게시글 검색
+    const searchTerm = req.body.searchTerm; // 클라이언트로부터 검색어를 받아옵니다.
+    const sql = 'SELECT * FROM post WHERE title LIKE ?'; // 검색어를 포함하는 제목을 가진 게시글을 찾는 쿼리
+    const searchValue = `%${searchTerm}%`; // SQL LIKE 연산자에 사용할 검색 값
+
+    // SQL 쿼리 실행
+    db.query(sql, [searchValue], (err, results) => {
+        if (err) {
+            console.error('게시물 검색에 실패했습니다.', err);
+            return res.status(500).json({ error: '게시물 검색에 실패했습니다.' });
+        }
+        res.json(results); // 검색 결과를 클라이언트에 응답으로 보냅니다.
+    });
+});
 app.listen(8081, () => {
     console.log("Server is running on port 8081");
 });
