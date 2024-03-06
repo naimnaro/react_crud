@@ -86,7 +86,8 @@ function PaginationComponent({ user }) {
     const handleSearch = async () => {
         if (searchTerm.trim() === "") {
             // 검색어가 공백이거나 빈 문자열인 경우에는 기존의 테이블로 복구합니다.
-            setPosts(originalPosts);
+            
+            window.location.reload();
             return;
         }
     
