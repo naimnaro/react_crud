@@ -3,7 +3,8 @@ import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Table, ListGroup, Form, Button } from 'react-bootstrap';
 
-function PostRead({ user }) {
+function PostRead({ user}) {
+    const [searchTerm, setSearchTerm] = useState('');
     const location = useLocation();
     const navigate = useNavigate();
     const post_id = new URLSearchParams(location.search).get('post_id');
@@ -53,12 +54,14 @@ function PostRead({ user }) {
     };
 
     useEffect(() => {
+        setSearchTerm(localStorage.getItem('searchTerm') || '');
         fetchPost();
         fetchComments();
         if (user !== null) {
             console.log("User:", user.name);
+            console.log(searchTerm);
         }
-    }, []);
+    }, [user]);
 
     const handleCancel = () => {
         window.history.back();

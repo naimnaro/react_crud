@@ -25,6 +25,7 @@ function PaginationComponent({ user }) {
     };
 
     const fetchPosts = async () => {
+        console.log(searchTerm);
         try {
             const response = await axios.get(`http://localhost:8081/post2?page=${currentPage}`);
             const formattedPosts = response.data.post.map(post => ({
