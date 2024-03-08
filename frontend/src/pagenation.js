@@ -140,7 +140,7 @@ function PaginationComponent({ user }) {
     return (
         <>
             <Navbar bg="dark" variant="dark">
-                <Navbar.Brand className="mx-3">  </Navbar.Brand>
+                <Navbar.Brand className="mx-3"> react_crud  </Navbar.Brand>
                 <Navbar.Collapse className="justify-content-end">
 
                     <Form className="d-flex mr-auto mx-2" onSubmit={(e) => e.preventDefault()}>

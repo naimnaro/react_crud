@@ -61,7 +61,7 @@ function PostRead({ user }) {
     }, []);
 
     const handleCancel = () => {
-        navigate('/pagenation');
+        window.history.back();
     };
 
     const handleSubmitComment = async () => {
