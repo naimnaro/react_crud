@@ -60,16 +60,17 @@ function PaginationComponent({ user }) {
     };
 
     const handletoHome = () => {
+        localStorage.removeItem('searchTerm'); 
         navigate('/home');
     };
 
     const handleEditPost = (post_id) => {
-        localStorage.setItem('searchTerm', searchTerm);
+        localStorage.removeItem('searchTerm'); 
         navigate(`/postedit?post_id=${post_id}`);
     };
 
     const handleCardClick = (post_id) => {
-        localStorage.setItem('searchTerm', searchTerm);
+        localStorage.removeItem('searchTerm'); 
         navigate(`/postread?post_id=${post_id}`);
     };
 
@@ -139,7 +140,7 @@ function PaginationComponent({ user }) {
     return (
         <>
             <Navbar bg="dark" variant="dark">
-                <Navbar.Brand className="mx-3"> naimnaro </Navbar.Brand>
+                <Navbar.Brand className="mx-3">  </Navbar.Brand>
                 <Navbar.Collapse className="justify-content-end">
 
                     <Form className="d-flex mr-auto mx-2" onSubmit={(e) => e.preventDefault()}>
