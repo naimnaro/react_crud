@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
 
 function PaginationComponent({ user }) {
+
     const [posts, setPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
@@ -71,7 +72,7 @@ function PaginationComponent({ user }) {
     };
 
     const handleCardClick = (post_id) => {
-        localStorage.removeItem('searchTerm'); 
+        localStorage.setItem('searchTerm', searchTerm); 
         navigate(`/postread?post_id=${post_id}`);
     };
 

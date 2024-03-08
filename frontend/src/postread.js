@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Table, ListGroup, Form, Button } from 'react-bootstrap';
 
 function PostRead({ user}) {
-    const [searchTerm, setSearchTerm] = useState('');
+    
     const location = useLocation();
     const navigate = useNavigate();
     const post_id = new URLSearchParams(location.search).get('post_id');
@@ -40,6 +40,7 @@ function PostRead({ user}) {
         try {
             const response = await axios.get(`http://localhost:8081/postedit/${post_id}`);
             const postData = response.data;
+            
             setTitle(postData.title);
             setContent(postData.content);
             setAuthor(postData.author_name);
@@ -54,12 +55,12 @@ function PostRead({ user}) {
     };
 
     useEffect(() => {
-        setSearchTerm(localStorage.getItem('searchTerm') || '');
+        
         fetchPost();
         fetchComments();
         if (user !== null) {
             console.log("User:", user.name);
-            console.log(searchTerm);
+            
         }
     }, [user]);
 
