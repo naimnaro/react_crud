@@ -44,10 +44,24 @@ function PaginationComponent({ user }) {
         } else {
             fetchPosts();
         }
-
+        
     }, [currentPage, user, searchTerm]);
 
-
+    const fetchSearchedPosts = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8081/post/search?term=${searchTerm}`);
+            const formattedPosts = response.data.map(post => ({
+                ...post,
+                created_at: formatDateTime(post.created_at)
+            }));
+            localStorage.setItem('searchTerm', searchTerm);
+            setSearchedPosts(formattedPosts);
+            setPosts(formattedPosts);
+            setTotalPages(1);
+        } catch (error) {
+            console.error('검색된 게시물을 불러오는데 실패했습니다.', error);
+        }
+    };
 
     const handlePageChange = (page) => {
         localStorage.setItem('searchTerm', searchTerm);
@@ -90,36 +104,20 @@ function PaginationComponent({ user }) {
         }
     };
 
-    const fetchSearchedPosts = async () => {  // 입력된 검색어를 실시간으로 세션에저장, 게시글 검색 (search 버튼 불필요)
-        try {
-            const response = await axios.get(`http://localhost:8081/post/search?term=${searchTerm}`);
-            const formattedPosts = response.data.map(post => ({
-                ...post,
-                created_at: formatDateTime(post.created_at)
-            }));
-            localStorage.setItem('searchTerm', searchTerm);
-            setSearchedPosts(formattedPosts);
-            setPosts(formattedPosts);
-            setTotalPages(1);
-        } catch (error) {
-            console.error('검색된 게시물을 불러오는데 실패했습니다.', error);
-        }
-    };
-
-    const handleSearch = async () => {     // 실시간 업데이트가 아닌, search버튼을 통한 검색 
+    const handleSearch = async () => {
         if (searchTerm.trim() === "") {
             setSearchTerm('');
             localStorage.removeItem('searchTerm'); // 검색어를 localStorage에서 제거
             fetchPosts(); // 검색어가 비어있으면 전체 게시물을 로드
             return;
         }
-
+        
         if (searchTerm.length < 2) {
             alert("두 글자 이상의 검색어를 입력하세요.");
             console.log("두 글자 이상의 검색어를 입력하세요.");
             return;
         }
-
+        
         try {
             await fetchSearchedPosts(); // 검색어가 있는 경우에만 검색된 게시물을 로드
             localStorage.setItem('searchTerm', searchTerm); // 검색어를 localStorage에 저장
@@ -128,22 +126,15 @@ function PaginationComponent({ user }) {
             console.error('검색에 실패했습니다.', error);
         }
     };
-
-    const handleRefresh = async () => {
-        localStorage.removeItem('searchTerm');
-        window.location.reload();
-
-
-    };
-
+    
     return (
         <>
             <Navbar bg="dark" variant="dark">
                 <Navbar.Brand className="mx-3"> naimnaro </Navbar.Brand>
                 <Navbar.Collapse className="justify-content-end">
-
+                    
                     <Form className="d-flex mr-auto mx-2" onSubmit={(e) => e.preventDefault()}>
-
+                        
                         <Form.Control
                             type="text"
                             placeholder="검색어 입력"
@@ -152,12 +143,12 @@ function PaginationComponent({ user }) {
                             onKeyPress={(e) => {
                                 if (e.key === 'Enter') {
                                     e.preventDefault();
-
+                                    handleSearch();
                                 }
                             }}
                             style={{ maxWidth: '400px' }}
                         />
-                        <Button variant="btn btn-secondary ml-2 mx-1" onClick={handleRefresh}> Refresh </Button>
+                        <Button variant="btn btn-secondary ml-2 mx-1" onClick={handleSearch}> Refresh </Button>
                         <button className="btn btn-secondary" onClick={handletoHome}>Home</button>
                     </Form>
                 </Navbar.Collapse>
