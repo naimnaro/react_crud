@@ -15,26 +15,27 @@ function Home({ user, setUser }) {
 
     const handletoboard = () => {
         navigate('/postlist');
-        
     };
+
     const handletopagenation = () => {
         navigate('/pagenation');
-        
     };
+
     const handletotestmodal = () => {
         navigate('/testmodal');
-        
     };
 
     return (
-        <div className="container d-flex justify-content-center align-items-center vh-100">
+        <div className="container d-flex justify-content-center align-items-center bg-secondary vh-100">
             {user && (
-                <div className="text-center">
-                    <p className="mb-4"  style={{ fontSize: '24px' }} >환영합니다, {user.name}님!</p>
-                    <button className="btn btn-success" onClick={handletoboard} style={{ marginRight: '0.5rem' }}>자유 게시판</button>
-                    <button className="btn btn-success" onClick={handletopagenation} style={{ marginRight: '0.5rem' }}>자유 게시판(페이징 처리 완료버전)</button>
-                    <button className="btn btn-danger" onClick={handleLogout} style={{ marginRight: '0.5rem' }}>로그아웃</button>
-                    <button className="btn btn-danger" onClick={handletotestmodal} style={{ marginRight: '0.5rem' }}>테스트모달</button>
+                <div className="text-center border rounded bg-white p-4">
+                    <p className="mb-4" style={{ fontSize: '24px' }}>환영합니다, {user.name}님!</p>
+                    <div className="d-flex flex-column">
+                        <button className="btn btn-success mb-2" onClick={handletoboard}>자유 게시판(카드박스 버전)</button>
+                        <button className="btn btn-success mb-2" onClick={handletopagenation}>자유 게시판(페이징 버전)</button>
+                        <button className="btn btn-danger mb-2" onClick={handleLogout}>로그아웃</button>
+                        <button className="btn btn-danger mb-2" onClick={handletotestmodal}>테스트 : 모달</button>
+                    </div>
                 </div>
             )}
         </div>
