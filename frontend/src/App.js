@@ -8,6 +8,7 @@ import PostList from './postlist';
 import Pagination from './pagenation';
 import PostEdit from './postedit';
 import PostRead from './postread';
+import TestModal from './testmodal';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -30,6 +31,7 @@ function App() {
         <Route path="/pagenation" element={<Pagination user={user} setUser={setUser} />} />
         <Route path="/postedit" element={<PostEdit user={user} setUser={setUser} />} />
         <Route path="/postread" element={<PostRead user={user} setUser={setUser} />} />
+        <Route path="/testmodal" element={<TestModal user={user} setUser={setUser} />} />
       </Routes>
     </Router>
   );

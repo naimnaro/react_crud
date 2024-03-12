@@ -21,6 +21,10 @@ function Home({ user, setUser }) {
         navigate('/pagenation');
         
     };
+    const handletotestmodal = () => {
+        navigate('/testmodal');
+        
+    };
 
     return (
         <div className="container d-flex justify-content-center align-items-center vh-100">
@@ -30,6 +34,7 @@ function Home({ user, setUser }) {
                     <button className="btn btn-success" onClick={handletoboard} style={{ marginRight: '0.5rem' }}>자유 게시판</button>
                     <button className="btn btn-success" onClick={handletopagenation} style={{ marginRight: '0.5rem' }}>자유 게시판(페이징 처리 완료버전)</button>
                     <button className="btn btn-danger" onClick={handleLogout} style={{ marginRight: '0.5rem' }}>로그아웃</button>
+                    <button className="btn btn-danger" onClick={handletotestmodal} style={{ marginRight: '0.5rem' }}>테스트모달</button>
                 </div>
             )}
         </div>

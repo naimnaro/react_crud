@@ -1,22 +1,32 @@
 import React, { useState } from 'react';
-import ReactModal from 'react-modal';
+import { Modal, Button } from 'react-bootstrap';
 
 function TestModal() {
-  const [modalIsOpen, setModalIsOpen] = useState(true);
+  const [show, setShow] = useState(false);
 
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   return (
     <div>
-      <button onClick={() => setModalIsOpen(true)}>Open Modal</button>
-      <ReactModal isOpen={modalIsOpen} onRequestClose={closeModal} contentLabel="Minimal Modal">
-        <div>
-          <p>Hello, this is a minimal modal!</p>
-          <button onClick={closeModal}>Close Modal</button>
-        </div>
-      </ReactModal>
+      <Button variant="primary" onClick={handleShow}>
+        Launch demo modal
+      </Button>
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Hello, this is a modal!</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }
