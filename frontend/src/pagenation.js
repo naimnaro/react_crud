@@ -1,3 +1,4 @@
+//프론트   ( 리액트 + 부트스트랩 + 모달 (알림창))
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Pagination, Table, Button, Navbar, Container, Row, Col, Form } from 'react-bootstrap';
