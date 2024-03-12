@@ -74,7 +74,7 @@ function PostForm({ user }) {
       {/* 모달 컴포넌트 */}
       <Modal show={showModal} onHide={closeModal} centered>
         <Modal.Header closeButton>
-          <Modal.Title>게시글 등록 결과</Modal.Title>
+          <Modal.Title>게시글 작성</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {modalMessage}

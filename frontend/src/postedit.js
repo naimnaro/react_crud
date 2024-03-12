@@ -40,7 +40,7 @@ function PostEdit({ user }) {
         await axios.put(`http://localhost:8081/postedit/${post_id}`, { title, content, author_name: user.name });
         setModalMessage('게시글이 성공적으로 수정되었습니다.');
         setShowModal(true); // 모달 열기
-        navigate('/pagenation');
+        
       } catch (error) {
         console.error('게시글 수정에 실패했습니다.', error);
         alert('게시글 수정에 실패했습니다.');
@@ -88,7 +88,7 @@ function PostEdit({ user }) {
     {/* 모달 컴포넌트 */}
     <Modal show={showModal} onHide={closeModal} centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>게시글 목록</Modal.Title>
+                    <Modal.Title>게시글 수정</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {modalMessage}
