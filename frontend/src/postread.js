@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Modal from 'react-bootstrap/Modal';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Table, ListGroup, Form, Button } from 'react-bootstrap';
 
-function PostRead({ user}) {
-    
+function PostRead({ user }) {
+
     const location = useLocation();
     const navigate = useNavigate();
     const post_id = new URLSearchParams(location.search).get('post_id');
@@ -15,6 +16,8 @@ function PostRead({ user}) {
     const [views, setViews] = useState(0);
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
+    const [showModal, setShowModal] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
 
     const formatDateTime = (dateTimeString) => {
         const dateTime = new Date(dateTimeString);
@@ -23,7 +26,7 @@ function PostRead({ user}) {
         const day = dateTime.getDate().toString().padStart(2, '0');
         const hour = dateTime.getHours().toString().padStart(2, '0');
         const minute = dateTime.getMinutes().toString().padStart(2, '0');
-        
+
         return `${year}-${month}-${day} | ${hour}:${minute}`;
     };
 
@@ -40,7 +43,7 @@ function PostRead({ user}) {
         try {
             const response = await axios.get(`http://localhost:8081/postedit/${post_id}`);
             const postData = response.data;
-            
+
             setTitle(postData.title);
             setContent(postData.content);
             setAuthor(postData.author_name);
@@ -55,12 +58,12 @@ function PostRead({ user}) {
     };
 
     useEffect(() => {
-        
+
         fetchPost();
         fetchComments();
         if (user !== null) {
             console.log("User:", user.name);
-            
+
         }
     }, [user]);
 
@@ -69,14 +72,28 @@ function PostRead({ user}) {
     };
 
     const handleSubmitComment = async () => {
-        try {
-            await axios.post(`http://localhost:8081/comments/${post_id}`, { content: newComment, comment_name: user.name });
-            setNewComment('');
-            fetchComments();
-        } catch (error) {
-            console.error('댓글 작성에 실패했습니다.', error);
+        if (!newComment.trim()) {
+            setModalMessage('내용을 입력해주세요');
+            setShowModal(true); // 모달 열기
+            
         }
+        else {
+            try {
+                await axios.post(`http://localhost:8081/comments/${post_id}`, { content: newComment, comment_name: user.name });
+                setNewComment('');
+                fetchComments();
+            } catch (error) {
+                console.error('댓글 작성에 실패했습니다.', error);
+            }
+        }
+
     };
+
+    const closeModal = () => {
+        setShowModal(false); 
+        
+        
+      };
 
     const handleDeleteComment = async (comment_id) => {
         try {
@@ -152,6 +169,18 @@ function PostRead({ user}) {
                     </div>
                 </div>
             </div>
+            {/* 모달 컴포넌트 */}
+            <Modal show={showModal} onHide={closeModal} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>댓글</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {modalMessage}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={closeModal}>닫기</Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 }
