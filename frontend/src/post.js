@@ -10,7 +10,6 @@ function PostForm({ user }) {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     console.log("User:", user);
@@ -18,25 +17,36 @@ function PostForm({ user }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      setIsSubmitting(true); // 페이지 전환을 막기 위해 true로 설정
-      await axios.post('http://localhost:8081/post', { title, content, author_name: user.name });
-      setModalMessage('게시글이 성공적으로 작성되었습니다.');
-      setShowModal(true);
-    } catch (error) {
-      console.error('게시글 작성에 실패했습니다.', error);
-      alert('게시글 작성에 실패했습니다.');
+    if (!title.trim() || !content.trim()) {
+      setModalMessage('제목과 내용을 입력해주세요.');
+      setShowModal(true); // 모달 열기
+    } else {
+      try {
+        await axios.post('http://localhost:8081/post', { title, content, author_name: user.name });
+        setModalMessage('게시글이 성공적으로 작성되었습니다.'); // 성공 메시지 설정
+        setShowModal(true); // 모달 열기
+      } catch (error) {
+        console.error('게시글 작성에 실패했습니다.', error);
+      
+      }
     }
+  };
+  const handletopostlist = () => {
+    navigate('/pagenation');
   };
 
   const closeModal = () => {
-    setShowModal(false);
-    setIsSubmitting(false); // 페이지 전환 허용으로 변경
-    navigate('/pagenation'); // 모달이 닫힐 때 페이지 전환 실행
-  };
-
-  const handletopostlist = () => {
-    navigate('/pagenation');
+    if (title.trim() && content.trim()) {
+      // 제목과 내용이 존재하는 경우
+      setShowModal(false); // 모달 닫기
+      navigate('/pagenation'); // 페이지 이동
+    } else {
+      // 제목 또는 내용이 비어있는 경우
+      setShowModal(false); // 모달 닫기
+      // 입력창 초기화
+      setTitle('');
+      setContent('');
+    }
   };
 
   return (
@@ -53,22 +63,22 @@ function PostForm({ user }) {
               <textarea id="content" className="form-control" style={{ height: '400px' }} value={content} onChange={(e) => setContent(e.target.value)} />
             </div>
             <div className="d-flex justify-content-end">
-              <button type="submit" className="btn btn-primary me-2" disabled={isSubmitting}>게시글 등록</button>
+              <button type="submit" className="btn btn-primary me-2">게시글 등록</button>
               <button type="button" className="btn btn-danger" onClick={handletopostlist}>취소</button>
             </div>
           </form>
         </div>
       </div>
-      {/* 모달 컴포넌트 */}   
-      <Modal show={showModal} onHide={closeModal}>
+      {/* 모달 컴포넌트 */}
+      <Modal show={showModal} onHide={closeModal} centered>
         <Modal.Header closeButton>
-          <Modal.Title>게시글 작성</Modal.Title>
+          <Modal.Title>게시글 등록 결과</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {modalMessage}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={closeModal}>Close</Button>
+          <Button variant="secondary" onClick={closeModal}>닫기</Button>
         </Modal.Footer>
       </Modal>
     </div>
