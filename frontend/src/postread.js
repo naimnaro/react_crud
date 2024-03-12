@@ -5,7 +5,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Table, ListGroup, Form, Button } from 'react-bootstrap';
 
 function PostRead({ user }) {
-
     const location = useLocation();
     const navigate = useNavigate();
     const post_id = new URLSearchParams(location.search).get('post_id');
@@ -26,7 +25,6 @@ function PostRead({ user }) {
         const day = dateTime.getDate().toString().padStart(2, '0');
         const hour = dateTime.getHours().toString().padStart(2, '0');
         const minute = dateTime.getMinutes().toString().padStart(2, '0');
-
         return `${year}-${month}-${day} | ${hour}:${minute}`;
     };
 
@@ -43,28 +41,34 @@ function PostRead({ user }) {
         try {
             const response = await axios.get(`http://localhost:8081/postedit/${post_id}`);
             const postData = response.data;
-
             setTitle(postData.title);
             setContent(postData.content);
             setAuthor(postData.author_name);
             setCreatedAt(formatDateTime(postData.created_at)); // 변경된 부분
             setViews(postData.views);
-
-            // 조회수 증가 요청
-            await axios.post(`http://localhost:8081/post/${post_id}/views`);
         } catch (error) {
             console.error('게시글을 불러오는데 실패했습니다.', error);
         }
     };
 
     useEffect(() => {
-
         fetchPost();
         fetchComments();
         if (user !== null) {
             console.log("User:", user.name);
-
         }
+
+        // 조회수 증가 요청
+        const increaseViews = async () => {
+            try {
+                const response = await axios.post(`http://localhost:8081/post/${post_id}/views`);
+                setViews(prevViews => prevViews + 1); // 증가 요청 성공 시 views 상태 업데이트
+            } catch (error) {
+                console.error('조회수를 증가하는데 실패했습니다.', error);
+            }
+        };
+
+        increaseViews();
     }, [user]);
 
     const handleCancel = () => {
@@ -75,9 +79,7 @@ function PostRead({ user }) {
         if (!newComment.trim()) {
             setModalMessage('내용을 입력해주세요');
             setShowModal(true); // 모달 열기
-            
-        }
-        else {
+        } else {
             try {
                 await axios.post(`http://localhost:8081/comments/${post_id}`, { content: newComment, comment_name: user.name });
                 setNewComment('');
@@ -86,14 +88,11 @@ function PostRead({ user }) {
                 console.error('댓글 작성에 실패했습니다.', error);
             }
         }
-
     };
 
     const closeModal = () => {
-        setShowModal(false); 
-        
-        
-      };
+        setShowModal(false);
+    };
 
     const handleDeleteComment = async (comment_id) => {
         try {
@@ -145,12 +144,10 @@ function PostRead({ user }) {
                                     <div className="d-flex justify-content-end align-items-start">
                                         {user && user.name === comment.comment_name ? (
                                             <>
-                                                <Button variant="danger" style={{ padding: '0.25rem 0.25rem', fontSize: '0.75rem' }}
-                                                    className="ms-2" onClick={() => handleDeleteComment(comment.comment_id)} > 삭제 </Button>
+                                                <Button variant="danger" style={{ padding: '0.25rem 0.25rem', fontSize: '0.75rem' }} className="ms-2" onClick={() => handleDeleteComment(comment.comment_id)} > 삭제 </Button>
                                             </>
                                         ) : (
                                             <>
-
                                                 <Button variant="danger" style={{ padding: '0.25rem 0.25rem', fontSize: '0.75rem' }} className="invisible">삭제</Button>
                                             </>
                                         )}
