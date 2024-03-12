@@ -1,3 +1,4 @@
+// 프론트 (리액트 + 부트스트랩 + 모달 (알림창))
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';

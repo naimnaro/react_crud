@@ -1,3 +1,4 @@
+//백엔드 ( express.js + cors + axios )
 const express = require("express");
 const mysql = require('mysql');
 const dbConfig = require('./config');
