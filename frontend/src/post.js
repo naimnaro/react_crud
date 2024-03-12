@@ -20,7 +20,9 @@ function PostForm({ user }) {
     if (!title.trim() || !content.trim()) {
       setModalMessage('제목과 내용을 입력해주세요.');
       setShowModal(true); // 모달 열기
-    } else {
+    } 
+    else
+    {
       try {
         await axios.post('http://localhost:8081/post', { title, content, author_name: user.name });
         setModalMessage('게시글이 성공적으로 작성되었습니다.'); // 성공 메시지 설정

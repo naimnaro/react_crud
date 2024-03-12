@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Pagination, Table, Button, Navbar, Container, Row, Col, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
+import Modal from 'react-bootstrap/Modal';
 
 function PaginationComponent({ user }) {
 
@@ -12,6 +13,8 @@ function PaginationComponent({ user }) {
     const [searchTerm, setSearchTerm] = useState(localStorage.getItem('searchTerm') || ''); // 검색어를 localStorage에서 가져옴
     const [searchedPosts, setSearchedPosts] = useState([]);
     const navigate = useNavigate();
+    const [showModal, setShowModal] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
 
     const formatDateTime = (dateTimeString) => {
         const dateTime = new Date(dateTimeString);
@@ -91,7 +94,12 @@ function PaginationComponent({ user }) {
         } else {
             console.log('해당 게시물을 삭제할 권한이 없습니다.');
         }
+        setModalMessage('게시글이 삭제되었습니다.');
+        setShowModal(true); // 모달 열기
     };
+    const closeModal = () => {
+        setShowModal(false); // 모달 닫기
+      };
 
     const fetchSearchedPosts = async () => {  // 입력된 검색어를 실시간으로 세션에저장, 게시글 검색 (search 버튼 불필요)
         try {
@@ -225,7 +233,20 @@ function PaginationComponent({ user }) {
                     </Col>
                 </Row>
             </Container>
+            {/* 모달 컴포넌트 */}
+            <Modal show={showModal} onHide={closeModal} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>게시글 목록</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {modalMessage}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={closeModal}>닫기</Button>
+                </Modal.Footer>
+            </Modal>
         </>
+        
     );
 }
 
