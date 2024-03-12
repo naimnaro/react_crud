@@ -2,42 +2,50 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Validation from './SignupValidation';
 import axios from 'axios';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import { AlertHeading } from 'react-bootstrap';
 
 function Signup() {
   const [values, setValues] = useState({ name: '', email: '', password: '' });
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
 
   const handleInput = (event) => {
     setValues((prev) => ({ ...prev, [event.target.name]: event.target.value }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const err = Validation(values);
     setErrors(err);
     if (err.name === '' && err.email === '' && err.password === '') {
-      axios
-        .post('http://localhost:8081/signup', values)
-        .then((res) => {
-          navigate('/');
-        })
-        .catch((err) => {
-          if (err.response && err.response.data && err.response.data.error) {
-            alert(err.response.data.error); // 중복 에러 메시지를 alert로 표시
-          } else {
-            alert('An error occurred while signing up'); // 기본적인 오류 메시지를 표시
-          }
-          console.error(err); // 에러 콘솔 출력
-        });
-        
-        
+      try {
+        await axios.post('http://localhost:8081/signup', values);
+        setModalMessage("회원가입이 완료되었습니다.");
+        setShowModal(true); // 모달 열기
+        // navigate('/');
+      } catch (err) {
+        if (err.response && err.response.data && err.response.data.error) {
+          setModalMessage(err.response.data.error);
+          setShowModal(true); // 모달 열기
+        } else {
+          alert('An error occurred while signing up');
+        }
+        console.error(err);
+      }
     }
+  };
+
+  const closeModal = () => {
+    setShowModal(false); // 모달 닫기
   };
 
   return (
     <div className='d-flex justify-content-center align-items-center bg-secondary vh-100'>
-      <div className='bg-white p-3 rounded w-25'>
+      <div className='bg-white p-3 rounded w-25' style={{ display: showModal ? 'none' : 'block' }}>
         <h2>Sign-Up</h2>
         <form action='' onSubmit={handleSubmit}>
           <div className='mb-3'>
@@ -78,6 +86,18 @@ function Signup() {
           <Link to='/' className='btn btn-default border w-100 bg-light rounded-0 text-decoration-none'>Login</Link>
         </form>
       </div>
+      {/* 모달 컴포넌트 */}
+      <Modal show={showModal} onHide={closeModal} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>회원가입</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {modalMessage}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={closeModal}>닫기</Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }

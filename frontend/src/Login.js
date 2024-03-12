@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Validation from './LoginValidation';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
 function Login({setUser}) {
   const [values, setValues] = useState({ email: '', password: '' });
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [backendError, setBackendError] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
 
   const handleInput = (event) => {
     setValues((prev) => ({ ...prev, [event.target.name]: event.target.value }));
@@ -32,8 +36,20 @@ function Login({setUser}) {
             alert('No record existed');
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          if (err.response && err.response.data && err.response.data.error) {
+            setModalMessage(err.response.data.error); // 성공 메시지 설정
+            setShowModal(true); // 모달 열기
+            
+          } else {
+            alert('An error occurred while login'); // 기본적인 오류 메시지를 표시
+          }
+          console.error(err); // 에러 콘솔 출력
+        });
     }
+  };
+  const closeModal = () => {
+    setShowModal(false); // 모달 닫기
   };
 
   return (
@@ -73,6 +89,18 @@ function Login({setUser}) {
           <Link to='/signup' className='btn btn-default border w-100 bg-light rounded-0 text-decoration-none'>Create Account</Link>
         </form>
       </div>
+      {/* 모달 컴포넌트 */}
+      <Modal show={showModal} onHide={closeModal} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>로그인 실패</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {modalMessage}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={closeModal}>닫기</Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }
