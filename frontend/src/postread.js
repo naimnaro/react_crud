@@ -17,6 +17,7 @@ function PostRead({ user }) {
     const [newComment, setNewComment] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
+    const [isRequestPending, setIsRequestPending] = useState(false);
 
     const formatDateTime = (dateTimeString) => {
         const dateTime = new Date(dateTimeString);
@@ -38,16 +39,30 @@ function PostRead({ user }) {
     };
 
     const fetchPost = async () => {
+        if (isRequestPending) {
+            // 이전 요청이 아직 처리 중이므로 현재 요청을 보류합니다.
+            return;
+        }
+
         try {
+            setIsRequestPending(true);
+
             const response = await axios.get(`http://localhost:8081/postedit/${post_id}`);
             const postData = response.data;
+
             setTitle(postData.title);
             setContent(postData.content);
             setAuthor(postData.author_name);
             setCreatedAt(formatDateTime(postData.created_at)); // 변경된 부분
             setViews(postData.views);
+
+            // 조회수 증가 요청
+            await axios.post(`http://localhost:8081/post/${post_id}/views`);
+            setViews(prevViews => prevViews + 1); // 조회수를 증가시킵니다.
         } catch (error) {
             console.error('게시글을 불러오는데 실패했습니다.', error);
+        } finally {
+            setIsRequestPending(false);
         }
     };
 
@@ -57,18 +72,6 @@ function PostRead({ user }) {
         if (user !== null) {
             console.log("User:", user.name);
         }
-
-        // 조회수 증가 요청
-        const increaseViews = async () => {
-            try {
-                const response = await axios.post(`http://localhost:8081/post/${post_id}/views`);
-                setViews(prevViews => prevViews + 1); // 증가 요청 성공 시 views 상태 업데이트
-            } catch (error) {
-                console.error('조회수를 증가하는데 실패했습니다.', error);
-            }
-        };
-
-        increaseViews();
     }, [user]);
 
     const handleCancel = () => {

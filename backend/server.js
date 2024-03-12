@@ -284,21 +284,9 @@ app.delete('/comments/:comment_id', (req, res) => {   // 댓글 삭제
     });
 });
 
-const requestStatus = {};
-
 app.post('/post/:postId/views', async (req, res) => {
     try {
         const postId = req.params.postId;
-        
-        // 요청 처리 중인지 확인
-        if (requestStatus[postId] && requestStatus[postId].processing) {
-            console.log('이미 요청을 처리 중입니다.');
-            return res.status(400).json({ error: '이미 요청을 처리 중입니다.' });
-        }
-
-        // 요청 처리 시작
-        requestStatus[postId] = { processing: true };
-
         // postId에 해당하는 게시글의 조회수를 1 증가시키는 쿼리를 실행합니다.
         // 여기서는 예시로 SQL 쿼리를 사용하였습니다. 사용하는 데이터베이스에 맞게 쿼리를 작성해주세요.
         const sql = 'UPDATE post SET views = views + 1 WHERE post_id = ?';
@@ -308,16 +296,10 @@ app.post('/post/:postId/views', async (req, res) => {
                 return res.status(500).json({ error: '게시글 조회수 증가에 실패했습니다.' });
             }
             console.log('게시글 조회수가 성공적으로 증가되었습니다.');
-
-            // 요청 처리 종료
-            delete requestStatus[postId];
             res.json({ success: true, message: '게시글 조회수가 성공적으로 증가되었습니다.' });
         });
     } catch (error) {
         console.error('게시글 조회수 증가 중 오류 발생:', error);
-
-        // 요청 처리 종료
-        delete requestStatus[postId];
         res.status(500).json({ error: '게시글 조회수 증가 중 오류 발생' });
     }
 });
