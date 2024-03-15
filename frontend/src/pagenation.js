@@ -1,4 +1,3 @@
-//프론트   ( 리액트 + 부트스트랩 + 모달 (알림창))
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Pagination, Table, Button, Navbar, Container, Row, Col, Form } from 'react-bootstrap';
@@ -7,15 +6,13 @@ import { useNavigate } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 
 function PaginationComponent({ user }) {
-
     const [posts, setPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const [searchTerm, setSearchTerm] = useState(localStorage.getItem('searchTerm') || ''); // 검색어를 localStorage에서 가져옴
-    const [searchedPosts, setSearchedPosts] = useState([]);
-    const navigate = useNavigate();
+    const [searchTerm, setSearchTerm] = useState(localStorage.getItem('searchTerm') || '');
     const [showModal, setShowModal] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
+    const navigate = useNavigate();
 
     const formatDateTime = (dateTimeString) => {
         const dateTime = new Date(dateTimeString);
@@ -29,10 +26,9 @@ function PaginationComponent({ user }) {
         return `${year}-${month}-${day} | ${ampm} ${hour}:${minute}`;
     };
 
-    const fetchPosts = async () => {
-        console.log(searchTerm);
+    const fetchPosts = async (pageNumber) => {
         try {
-            const response = await axios.get(`http://localhost:8081/post2?page=${currentPage}`);
+            const response = await axios.get(`http://localhost:8081/post2?page=${pageNumber}`);
             const formattedPosts = response.data.post.map(post => ({
                 ...post,
                 created_at: formatDateTime(post.created_at)
@@ -46,18 +42,23 @@ function PaginationComponent({ user }) {
 
     useEffect(() => {
         if (searchTerm) {
-            fetchSearchedPosts();
+            fetchSearchedPosts(currentPage);
         } else {
-            fetchPosts();
+            fetchPosts(currentPage);
         }
-
     }, [currentPage, user, searchTerm]);
 
-
-
-    const handlePageChange = (page) => {
-        localStorage.setItem('searchTerm', searchTerm);
-        setCurrentPage(page);
+    const handlePageChange = async (pageNumber) => {
+        setCurrentPage(pageNumber);
+        try {
+            if (searchTerm) {
+                await fetchSearchedPosts(pageNumber);
+            } else {
+                await fetchPosts(pageNumber);
+            }
+        } catch (error) {
+            console.error('페이지 변경 중 오류가 발생했습니다.', error);
+        }
     };
 
     const handletoPost = () => {
@@ -88,7 +89,7 @@ function PaginationComponent({ user }) {
                         Authorization: `Bearer ${user.token}`
                     }
                 });
-                fetchPosts();
+                fetchPosts(currentPage);
             } catch (error) {
                 console.error('게시물 삭제에 실패했습니다.', error);
             }
@@ -96,13 +97,14 @@ function PaginationComponent({ user }) {
             console.log('해당 게시물을 삭제할 권한이 없습니다.');
         }
         setModalMessage('게시글이 삭제되었습니다.');
-        setShowModal(true); // 모달 열기
-    };
-    const closeModal = () => {
-        setShowModal(false); // 모달 닫기
+        setShowModal(true);
     };
 
-    const fetchSearchedPosts = async () => {
+    const closeModal = () => {
+        setShowModal(false);
+    };
+
+    const fetchSearchedPosts = async (pageNumber) => {
         try {
             const response = await axios.get(`http://localhost:8081/post/search?term=${searchTerm}`);
             const formattedPosts = response.data.map(post => ({
@@ -110,18 +112,10 @@ function PaginationComponent({ user }) {
                 created_at: formatDateTime(post.created_at)
             }));
             localStorage.setItem('searchTerm', searchTerm);
-            setSearchedPosts(formattedPosts);
+            setTotalPages(Math.ceil(formattedPosts.length / 10));
 
-            // 페이지네이션을 위한 정보 설정
-            const totalPosts = formattedPosts.length;
-            const itemsPerPage = 10; // 페이지당 보여줄 게시글 수
-            const totalPages = Math.ceil(totalPosts / itemsPerPage);
-            setTotalPages(totalPages);
-
-            // 현재 페이지를 기준으로 페이지별 게시글 가져오기
-            const currentPage = 1; // 현재 페이지
-            const startIndex = (currentPage - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
+            const startIndex = (pageNumber - 1) * 10;
+            const endIndex = pageNumber * 10;
             const postsForPage = formattedPosts.slice(startIndex, endIndex);
             setPosts(postsForPage);
         } catch (error) {
@@ -129,11 +123,11 @@ function PaginationComponent({ user }) {
         }
     };
 
-    const handleSearch = async () => {     // 실시간 업데이트가 아닌, search버튼을 통한 검색 
+    const handleSearch = async () => {
         if (searchTerm.trim() === "") {
             setSearchTerm('');
-            localStorage.removeItem('searchTerm'); // 검색어를 localStorage에서 제거
-            fetchPosts(); // 검색어가 비어있으면 전체 게시물을 로드
+            localStorage.removeItem('searchTerm');
+            fetchPosts(currentPage);
             return;
         }
 
@@ -144,8 +138,8 @@ function PaginationComponent({ user }) {
         }
 
         try {
-            await fetchSearchedPosts(); // 검색어가 있는 경우에만 검색된 게시물을 로드
-            localStorage.setItem('searchTerm', searchTerm); // 검색어를 localStorage에 저장
+            await fetchSearchedPosts(1);
+            localStorage.setItem('searchTerm', searchTerm);
         } catch (error) {
             alert("검색에 실패했습니다.");
             console.error('검색에 실패했습니다.', error);
@@ -155,8 +149,6 @@ function PaginationComponent({ user }) {
     const handleRefresh = async () => {
         localStorage.removeItem('searchTerm');
         window.location.reload();
-
-
     };
 
     return (
@@ -164,9 +156,7 @@ function PaginationComponent({ user }) {
             <Navbar bg="dark" variant="dark">
                 <Navbar.Brand className="mx-3"> react_crud  </Navbar.Brand>
                 <Navbar.Collapse className="justify-content-end">
-
                     <Form className="d-flex mr-auto mx-2" onSubmit={(e) => e.preventDefault()}>
-
                         <Form.Control
                             type="text"
                             placeholder="검색어 입력"
@@ -175,7 +165,6 @@ function PaginationComponent({ user }) {
                             onKeyPress={(e) => {
                                 if (e.key === 'Enter') {
                                     e.preventDefault();
-
                                 }
                             }}
                             style={{ maxWidth: '400px' }}
@@ -245,7 +234,6 @@ function PaginationComponent({ user }) {
                     </Col>
                 </Row>
             </Container>
-            {/* 모달 컴포넌트 */}
             <Modal show={showModal} onHide={closeModal} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>게시글 목록</Modal.Title>
@@ -258,7 +246,6 @@ function PaginationComponent({ user }) {
                 </Modal.Footer>
             </Modal>
         </>
-
     );
 }
 
