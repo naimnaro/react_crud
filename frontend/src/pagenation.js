@@ -66,17 +66,17 @@ function PaginationComponent({ user }) {
     };
 
     const handletoHome = () => {
-        localStorage.removeItem('searchTerm'); 
+        localStorage.removeItem('searchTerm');
         navigate('/home');
     };
 
     const handleEditPost = (post_id) => {
-        localStorage.removeItem('searchTerm'); 
+        localStorage.removeItem('searchTerm');
         navigate(`/postedit?post_id=${post_id}`);
     };
 
     const handleCardClick = (post_id) => {
-        localStorage.setItem('searchTerm', searchTerm); 
+        localStorage.setItem('searchTerm', searchTerm);
         navigate(`/postread?post_id=${post_id}`);
     };
 
@@ -100,9 +100,9 @@ function PaginationComponent({ user }) {
     };
     const closeModal = () => {
         setShowModal(false); // 모달 닫기
-      };
+    };
 
-    const fetchSearchedPosts = async () => {  // 입력된 검색어를 실시간으로 세션에저장, 게시글 검색 (search 버튼 불필요)
+    const fetchSearchedPosts = async () => {
         try {
             const response = await axios.get(`http://localhost:8081/post/search?term=${searchTerm}`);
             const formattedPosts = response.data.map(post => ({
@@ -111,8 +111,19 @@ function PaginationComponent({ user }) {
             }));
             localStorage.setItem('searchTerm', searchTerm);
             setSearchedPosts(formattedPosts);
-            setPosts(formattedPosts);
-            setTotalPages(1);
+
+            // 페이지네이션을 위한 정보 설정
+            const totalPosts = formattedPosts.length;
+            const itemsPerPage = 10; // 페이지당 보여줄 게시글 수
+            const totalPages = Math.ceil(totalPosts / itemsPerPage);
+            setTotalPages(totalPages);
+
+            // 현재 페이지를 기준으로 페이지별 게시글 가져오기
+            const currentPage = 1; // 현재 페이지
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const postsForPage = formattedPosts.slice(startIndex, endIndex);
+            setPosts(postsForPage);
         } catch (error) {
             console.error('검색된 게시물을 불러오는데 실패했습니다.', error);
         }
@@ -247,7 +258,7 @@ function PaginationComponent({ user }) {
                 </Modal.Footer>
             </Modal>
         </>
-        
+
     );
 }
 
