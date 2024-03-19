@@ -12,6 +12,6 @@ ReactModal.setAppElement(root);
 root.render(
    
   
-    <App />
+    <App/>
 
 );
