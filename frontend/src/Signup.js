@@ -7,17 +7,17 @@ import Button from 'react-bootstrap/Button';
 
 
 function Signup() {
-  const [values, setValues] = useState({ name: '', email: '', password: '' });
+  const [values, setValues] = useState({ name: '', email: '', password: '' });  // values 초기값 '', setValues로 갱신
   const navigate = useNavigate();
-  const [errors, setErrors] = useState({});
-  const [showModal, setShowModal] = useState(false);
+  const [errors, setErrors] = useState({});     // 에러 관리
+  const [showModal, setShowModal] = useState(false);  //모달 상태 관리
   const [modalMessage, setModalMessage] = useState('');
 
-  const handleInput = (event) => {
+  const handleInput = (event) => { // 폼에 입력된값을 setValues (업데이트) (onchange : 변경될때)
     setValues((prev) => ({ ...prev, [event.target.name]: event.target.value }));
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event) => {  // 이하 login.js와 동일.
     event.preventDefault();
     const err = Validation(values);
     setErrors(err);

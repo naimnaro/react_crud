@@ -5,16 +5,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 
-function PaginationComponent({ user }) {
-    const [posts, setPosts] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
-    const [searchTerm, setSearchTerm] = useState(localStorage.getItem('searchTerm') || '');
+function PaginationComponent({ user }) {  // . user 프로퍼티를 props로 받습니다. (세션에 저장중인 유저정보를 얻기위해)
+    const [posts, setPosts] = useState([]); // 현재 페이지의 게시글 목록을 담을 상태(posts)를 초기화합니다.
+    const [currentPage, setCurrentPage] = useState(1);  // 현재 페이지 번호를 담을 상태(currentPage)를 초기화합니다.
+    const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수를 담을 상태(totalPages)를 초기화합니다.
+    const [searchTerm, setSearchTerm] = useState(localStorage.getItem('searchTerm') || ''); 
+    //검색어를 담을 상태(searchTerm)를 초기화하고, 검색어를 로컬스토리지에 저장, ( for 새로고침, 게시글을 들어갔다나와도 검색한 결과 유지)
     const [showModal, setShowModal] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
     const navigate = useNavigate();
 
-    const formatDateTime = (dateTimeString) => {
+    const formatDateTime = (dateTimeString) => {  // 표준시각 적절히 포멧 
         const dateTime = new Date(dateTimeString);
         const year = dateTime.getFullYear();
         const month = (dateTime.getMonth() + 1).toString().padStart(2, '0');
