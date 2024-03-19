@@ -9,23 +9,23 @@ function Login({setUser}) {
   const navigate = useNavigate();  // 네비게이션 객체를 가져온다.
 
   const [values, setValues] = useState({ email: '', password: '' });    // useState 사용, 초기값 values 를 ''로 설정, setValues로 업데이트
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({});    // 에러 관리
   const [backendError, setBackendError] = useState([]);
   const [showModal, setShowModal] = useState(false);    //알림창 (모달) 상태관리 
   const [modalMessage, setModalMessage] = useState('');
 
-  const handleInput = (event) => {
-    setValues((prev) => ({ ...prev, [event.target.name]: event.target.value }));
+  const handleInput = (event) => {  // 폼에 입력된값을 setValues (업데이트) (onchange : 변경될때)
+    setValues((prev) => ({ ...prev, [event.target.name]: event.target.value }));  
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const err = Validation(values);
-    setErrors(err);
+  const handleSubmit = (event) => {   // 폼에 입력된값을 버튼을 눌러 제출, (onsubmit : 제출될떄)
+    event.preventDefault(); // html 기본 이벤트발생을 방지 
+    const err = Validation(values);   // import한 Loginvalidation.js를 바탕으로 유효성 검사 
+    setErrors(err);    // 유효성 검사도중 에러발생시, 에러 업데이트 
     if (err.email === '' && err.password === '') {
       axios
-        .post('http://localhost:8081/login', values)
-        .then((res) => {
+        .post('http://localhost:8081/login', values)//서버의 'http://localhost:8081/login' 엔드포인트로 POST 요청을 보냅니다. 
+        .then((res) => {   // 서버로부터 응답을 받았을 때 실행되는 콜백 함수입니다. 응답은 res 객체에 담겨 있습니다.
           if (res.data.errors) {
             setBackendError(res.data.errors);
           } else if (res.data.success) {
