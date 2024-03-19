@@ -105,7 +105,7 @@ function PaginationComponent({ user }) {  // . user 프로퍼티를 props로 받
         setShowModal(false);
     };
 
-    const fetchSearchedPosts = async (pageNumber) => {  // 실시간 검색,
+    const fetchSearchedPosts = async (pageNumber) => {  // 실시간 검색, 
         try {
             const response = await axios.get(`http://localhost:8081/post/search?term=${searchTerm}`);
             const formattedPosts = response.data.map(post => ({
