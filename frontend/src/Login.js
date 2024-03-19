@@ -7,7 +7,6 @@ import Button from 'react-bootstrap/Button';
 
 function Login({setUser}) {
   const navigate = useNavigate();  // 네비게이션 객체를 가져온다.
-
   const [values, setValues] = useState({ email: '', password: '' });    // useState 사용, 초기값 values 를 ''로 설정, setValues로 업데이트
   const [errors, setErrors] = useState({});    // 에러 관리
   const [backendError, setBackendError] = useState([]);
@@ -26,15 +25,15 @@ function Login({setUser}) {
       axios
         .post('http://localhost:8081/login', values)//서버의 'http://localhost:8081/login' 엔드포인트로 POST 요청을 보냅니다. 
         .then((res) => {   // 서버로부터 응답을 받았을 때 실행되는 콜백 함수입니다. 응답은 res 객체에 담겨 있습니다.
-          if (res.data.errors) {
-            setBackendError(res.data.errors);
-          } else if (res.data.success) {
+          if (res.data.errors) {  // 응답한 데이터에 에러발생시, (error 필드가 존재하는지 )
+            setBackendError(res.data.errors);    // 에러 발생시, 에러 업데이트 (useState)
+          } else if (res.data.success) {  // 에러가 없고, success 필드가 true일시 
             setBackendError([]);
-            setUser(res.data.user); // 로그인한 사용자 정보 설정
-            localStorage.setItem('user', JSON.stringify(res.data.user));
-            navigate('/home');
+            setUser(res.data.user); // 로그인한 사용자 정보 업데이트
+            localStorage.setItem('user', JSON.stringify(res.data.user));  //로컬 스토리지에 사용자 정보 저장
+            navigate('/home');  // /home으로 리다이렉트
           } else {
-            alert('No record existed');
+            alert('No record existed');  // 에러도 , 성공도아님 , 
           }
         })
         .catch((err) => {
