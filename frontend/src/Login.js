@@ -1,17 +1,17 @@
-// 프론트 (리액트 + 부트스트랩 + 모달 (알림창))
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';   // React 라이브러리에서 useState 훅을 가져옴.
+import { Link, useNavigate } from 'react-router-dom';  // react-router-dom 라이브러리에서 Link 컴포넌트와 useNavigate 훅을 가져옵니다.
 import axios from 'axios';
-import Validation from './LoginValidation';
-import Modal from 'react-bootstrap/Modal';
+import Validation from './LoginValidation';  // 로그인 유효성 검사파일 LoginValidation.js를 가져옴
+import Modal from 'react-bootstrap/Modal';    
 import Button from 'react-bootstrap/Button';
 
 function Login({setUser}) {
-  const [values, setValues] = useState({ email: '', password: '' });
-  const navigate = useNavigate();
+  const navigate = useNavigate();  // 네비게이션 객체를 가져온다.
+
+  const [values, setValues] = useState({ email: '', password: '' });    // useState 사용, 초기값 values 를 ''로 설정, setValues로 업데이트
   const [errors, setErrors] = useState({});
   const [backendError, setBackendError] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);    //알림창 (모달) 상태관리 
   const [modalMessage, setModalMessage] = useState('');
 
   const handleInput = (event) => {
