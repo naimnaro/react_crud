@@ -105,7 +105,7 @@ function PaginationComponent({ user }) {  // . user 프로퍼티를 props로 받
         setShowModal(false);
     };
 
-    const fetchSearchedPosts = async (pageNumber) => {
+    const fetchSearchedPosts = async (pageNumber) => {  // 실시간 검색,
         try {
             const response = await axios.get(`http://localhost:8081/post/search?term=${searchTerm}`);
             const formattedPosts = response.data.map(post => ({
@@ -124,7 +124,7 @@ function PaginationComponent({ user }) {  // . user 프로퍼티를 props로 받
         }
     };
 
-    const handleSearch = async () => {
+    const handleSearch = async () => { // 실시간 검색이 아닌, 검색버튼으로 검색어를 제출해야 작동
         if (searchTerm.trim() === "") {
             setSearchTerm('');
             localStorage.removeItem('searchTerm');
