@@ -115,7 +115,7 @@ app.post('/post', (req, res) => {  // 게시글 작성
     });
   });
 
-  app.get('/post2', (req, res) => {           // 페이지네이션
+  app.get('/pagenation', (req, res) => {           // 페이지네이션
     const page = parseInt(req.query.page) || 1; // 요청된 페이지 번호, 기본값은 1
     const pageSize = 10; // 페이지 크기, 한 페이지당 10개의 게시글
   
@@ -145,26 +145,7 @@ app.post('/post', (req, res) => {  // 게시글 작성
     });
   });
 
-  app.get('/pagenation', (req, res) => {
-    const page = parseInt(req.query.page) || 1; // 요청된 페이지 번호, 기본값은 1
-    const pageSize = parseInt(req.query.pageSize) || 10; // 페이지 크기, 기본값은 10
-
-    const start = (page - 1) * pageSize; // 페이지의 시작 인덱스
-    const end = start + pageSize; // 페이지의 끝 인덱스
-
-    // 임의의 데이터 생성
-    const data = [];
-    for (let i = start; i < end; i++) {
-        data.push({
-            id: i + 1,
-            title: `Post ${i + 1}`,
-            content: `Content of post ${i + 1}`
-        });
-    }
-
-    // 클라이언트에 응답으로 데이터 전송
-    res.json(data);
-});
+ 
 
 app.get('/postedit/:post_id', (req, res) => {
   const post_id = req.params.post_id;

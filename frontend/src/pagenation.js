@@ -29,7 +29,7 @@ function PaginationComponent({ user }) {  // . user 프로퍼티를 props로 받
 
     const fetchPosts = async (pageNumber) => {
         try {
-            const response = await axios.get(`http://localhost:8081/post2?page=${pageNumber}`);
+            const response = await axios.get(`http://localhost:8081/pagenation?page=${pageNumber}`);
             const formattedPosts = response.data.post.map(post => ({
                 ...post,
                 created_at: formatDateTime(post.created_at)
