@@ -16,41 +16,41 @@ function PaginationComponent({ user }) {  // . user 프로퍼티를 props로 받
     const navigate = useNavigate();
 
     const formatDateTime = (dateTimeString) => {  // 표준시각 적절히 포멧 
-        const dateTime = new Date(dateTimeString);
-        const year = dateTime.getFullYear();
+        const dateTime = new Date(dateTimeString); //dateTimeString을 Date 객체로 변환합니다.
+        const year = dateTime.getFullYear();  // 년 월 일 시 분 초 오전 오후 
         const month = (dateTime.getMonth() + 1).toString().padStart(2, '0');
         const day = dateTime.getDate().toString().padStart(2, '0');
         const hour = dateTime.getHours() > 12 ? (dateTime.getHours() - 12).toString().padStart(2, '0') : dateTime.getHours().toString().padStart(2, '0');
         const minute = dateTime.getMinutes().toString().padStart(2, '0');
         const ampm = dateTime.getHours() >= 12 ? '오후' : '오전';
 
-        return `${year}-${month}-${day} | ${ampm} ${hour}:${minute}`;
+        return `${year}-${month}-${day} | ${ampm} ${hour}:${minute}`; // 포맷
     };
 
-    const fetchPosts = async (pageNumber) => {
+    const fetchPosts = async (pageNumber) => { // 페이지 번호에 해당하는 게시글을 가져오는 함수를 정의합니다.
         try {
-            const response = await axios.get(`http://localhost:8081/pagenation?page=${pageNumber}`);
+            const response = await axios.get(`http://localhost:8081/pagenation?page=${pageNumber}`); // 페이지 번호에 따라 게시글을 가져옵니다.
             const formattedPosts = response.data.post.map(post => ({
                 ...post,
                 created_at: formatDateTime(post.created_at)
             }));
-            setPosts(formattedPosts);
-            setTotalPages(response.data.totalPages);
+            setPosts(formattedPosts); //  포맷된 게시글 목록을 상태에 저장합니다.
+            setTotalPages(response.data.totalPages); // 전체 페이지 수를 설정합니다.
         } catch (error) {
             console.error('게시물을 불러오는데 실패했습니다.', error);
         }
     };
 
     useEffect(() => {
-        if (searchTerm) {
-            fetchSearchedPosts(currentPage);
+        if (searchTerm) { // 만약 검색어(searchTerm)가 있다면
+            fetchSearchedPosts(currentPage); // 검색된 게시글을 가져옵니다.
         } else {
-            fetchPosts(currentPage);
+            fetchPosts(currentPage); // 전체 게시글을 가져옵니다.
         }
-    }, [currentPage, user, searchTerm]);
+    }, [currentPage, user, searchTerm]); // currentPage, user, searchTerm이 변경될 때마다 useEffect가 실행됩니다.
 
-    const handlePageChange = async (pageNumber) => {
-        setCurrentPage(pageNumber);
+    const handlePageChange = async (pageNumber) => {   // 다른 페이지 번호로 이동시 
+        setCurrentPage(pageNumber);  
         try {
             if (searchTerm) {
                 await fetchSearchedPosts(pageNumber);
