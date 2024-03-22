@@ -116,7 +116,7 @@ app.post('/post', (req, res) => {  // 게시글 작성
   });
 
   app.get('/pagenation', (req, res) => {           // 페이지네이션
-    const page = parseInt(req.query.page) || 1; // 요청된 페이지 번호, 기본값은 1
+    const page = parseInt(req.query.page) || 1; // 요청된 페이지 번호를 파싱하고, 기본값으로 1을 설정합니다.
     const pageSize = 10; // 페이지 크기, 한 페이지당 10개의 게시글
   
     const start = (page - 1) * pageSize; // 페이지의 시작 인덱스
@@ -129,7 +129,7 @@ app.post('/post', (req, res) => {  // 게시글 작성
         return res.status(500).json({ error: '게시물을 불러오는데 실패했습니다.' });
       }
       
-      // 총 게시글 수를 가져오기
+      // 총 게시글 수 카운트
       db.query('SELECT COUNT(*) AS total FROM post', (err, countResult) => {
         if (err) {
           console.error('게시물을 불러오는데 실패했습니다.', err);
