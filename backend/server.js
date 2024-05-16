@@ -12,14 +12,6 @@ app.use(express.json());
 
 const db = mysql.createConnection(dbConfig);
 
-app.use(express.static(path.join(__dirname, '../frontend/build')));
-
-// 모든 요청에 대해 React 앱의 index.html을 제공
-// 다른 라우트 핸들러들보다 아래에 위치해야 합니다.
-app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../frontend/build', 'index.html'));
-});
-
 
 
 app.post('/signup', [         //회원가입 
