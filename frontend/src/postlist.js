@@ -13,7 +13,7 @@ function PostList({ user }) {
 
     const fetchPosts = async () => {
         try {
-            const response = await axios.get('http://52.65.217.35:8081/post');
+            const response = await axios.get('http://3.27.151.253:8081/post');
             setPosts(response.data);
         } catch (error) {
             console.error('게시물을 불러오는데 실패했습니다.', error);
