@@ -302,6 +302,6 @@ app.get('/post/search', (req, res) => {         // 게시글 검색
 });
 
 
-app.listen(8081, () => {
+app.listen(5000, () => {
     console.log("Server is running on port 8081");
 });
