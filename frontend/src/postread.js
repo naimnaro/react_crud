@@ -31,7 +31,7 @@ function PostRead({ user }) {
 
     const fetchComments = async () => {
         try {
-            const response = await axios.get(`http://3.27.151.253:8081/comments/${post_id}`);
+            const response = await axios.get(`http://13.210.224.243:8081/comments/${post_id}`);
             setComments(response.data.comments);
         } catch (error) {
             console.error('댓글을 불러오는데 실패했습니다.', error);
@@ -47,7 +47,7 @@ function PostRead({ user }) {
         try {
             setIsRequestPending(true);
 
-            const response = await axios.get(`http://3.27.151.253:8081/postedit/${post_id}`);
+            const response = await axios.get(`http://13.210.224.243:8081/postedit/${post_id}`);
             const postData = response.data;
 
             setTitle(postData.title);
@@ -57,7 +57,7 @@ function PostRead({ user }) {
             setViews(postData.views);
 
             // 조회수 증가 요청
-            await axios.post(`http://3.27.151.253:8081/post/${post_id}/views`);
+            await axios.post(`http://13.210.224.243:8081/post/${post_id}/views`);
             setViews(prevViews => prevViews + 1); // 조회수를 증가시킵니다.
         } catch (error) {
             console.error('게시글을 불러오는데 실패했습니다.', error);
@@ -84,7 +84,7 @@ function PostRead({ user }) {
             setShowModal(true); // 모달 열기
         } else {
             try {
-                await axios.post(`http://3.27.151.253:8081/comments/${post_id}`, { content: newComment, comment_name: user.name });
+                await axios.post(`http://13.210.224.243:8081/comments/${post_id}`, { content: newComment, comment_name: user.name });
                 setNewComment('');
                 fetchComments();
             } catch (error) {
@@ -99,7 +99,7 @@ function PostRead({ user }) {
 
     const handleDeleteComment = async (comment_id) => {
         try {
-            await axios.delete(`http://3.27.151.253:8081/comments/${comment_id}`);
+            await axios.delete(`http://13.210.224.243:8081/comments/${comment_id}`);
             fetchComments();
         } catch (error) {
             console.error('댓글 삭제에 실패했습니다.', error);
@@ -159,7 +159,7 @@ function PostRead({ user }) {
                             </ListGroup.Item>
                         ))}
                     </ListGroup>
-                    <Form.Group controlId="newComment">
+                    <Form.Group controlId="newComment"> 
                         <Form.Label>댓글 작성</Form.Label>
                         <Form.Control as="textarea" rows={3} value={newComment} onChange={(e) => setNewComment(e.target.value)} />
                     </Form.Group>

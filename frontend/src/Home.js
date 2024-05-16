@@ -18,7 +18,7 @@ function Home({ user, setUser }) {
     };
 
     const handletopagenation = () => {
-        navigate('/pagenation');
+        navigate('/pagenation'); 
     };
 
     const handletotestmodal = () => {

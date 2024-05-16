@@ -8,7 +8,7 @@ function PostForm({ user }) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const navigate = useNavigate();
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false); 
   const [modalMessage, setModalMessage] = useState('');
 
   useEffect(() => {
@@ -24,7 +24,7 @@ function PostForm({ user }) {
     else
     {
       try {
-        await axios.post('http://3.27.151.253:8081/post', { title, content, author_name: user.name });
+        await axios.post('http://13.210.224.243:8081/post', { title, content, author_name: user.name });
         setModalMessage('게시글이 성공적으로 작성되었습니다.'); // 성공 메시지 설정
         setShowModal(true); // 모달 열기
       } catch (error) {

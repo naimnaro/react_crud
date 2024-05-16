@@ -21,9 +21,9 @@ function Login({setUser}) {
     event.preventDefault(); // html 기본 이벤트발생을 방지 
     const err = Validation(values);   // import한 Loginvalidation.js를 바탕으로 유효성 검사 
     setErrors(err);    // 유효성 검사도중 에러발생시, 에러 업데이트 
-    if (err.email === '' && err.password === '') {
+    if (err.email === '' && err.password === '') { 
       axios
-        .post('http://3.27.151.253:8081/login', values)//서버의 'http://localhost:8081/login' 엔드포인트로 POST 요청을 보냅니다. 
+        .post('http://http://13.210.224.243:8081/login', values)//서버의 'http://localhost:8081/login' 엔드포인트로 POST 요청을 보냅니다. 
         .then((res) => {   // 서버로부터 응답을 받았을 때 실행되는 콜백 함수입니다. 응답은 res 객체에 담겨 있습니다.
           if (res.data.errors) {  // 응답한 데이터에 에러발생시, (error 필드가 존재하는지 )
             setBackendError(res.data.errors);    // 에러 발생시, 에러 업데이트 (useState)
