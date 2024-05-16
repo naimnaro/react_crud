@@ -19,12 +19,12 @@ function PostForm({ user }) {
     e.preventDefault();
     if (!title.trim() || !content.trim()) {
       setModalMessage('제목과 내용을 입력해주세요.');
-      setShowModal(true); // 모달 열기
+      setShowModal(true); // 모달열기
     } 
     else
     {
       try {
-        await axios.post('http://52.65.217.35:8081/post', { title, content, author_name: user.name });
+        await axios.post('http://3.27.151.253:8081/post', { title, content, author_name: user.name });
         setModalMessage('게시글이 성공적으로 작성되었습니다.'); // 성공 메시지 설정
         setShowModal(true); // 모달 열기
       } catch (error) {
