@@ -15,8 +15,9 @@ const db = mysql.createConnection(dbConfig);
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname+'/client/build/index.html'));
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   });
+  
 
 app.post('/signup', [         //회원가입 
     // 사용자가 제공한 데이터의 유효성을 검사하는 미들웨어 추가
