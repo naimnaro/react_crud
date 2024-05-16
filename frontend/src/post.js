@@ -19,7 +19,7 @@ function PostForm({ user }) {
     e.preventDefault();
     if (!title.trim() || !content.trim()) {
       setModalMessage('제목과 내용을 입력해주세요.');
-      setShowModal(true); // 모달열기
+      setShowModal(true); // 모달 열기
     } 
     else
     {

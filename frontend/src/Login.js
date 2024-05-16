@@ -33,7 +33,7 @@ function Login({setUser}) {
             localStorage.setItem('user', JSON.stringify(res.data.user));  //로컬 스토리지에 사용자 정보 저장
             navigate('/home');  // /home으로 리다이렉트
           } else {
-            alert('No record existed');  // 에러도 , 성공도아님 , 
+            alert('No record existed');  // 에러도 , 성공도 아님 , 
           }
         })
         .catch((err) => {

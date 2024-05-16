@@ -25,7 +25,7 @@ function PostList({ user }) {
         navigate('/post'); // /post 경로로 이동
     };
     const handletoHome = () => {
-        navigate('/home'); // /post 경로로 이동
+        navigate('/home'); // /post  경로로 이동
     };
 
     return (
