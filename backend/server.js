@@ -6,6 +6,7 @@ const cors = require('cors');
 const { check, validationResult } = require('express-validator');
 const path = require('path');
 const https = require('https');
+const fs = require('fs');
 
 const app = express();
 app.use(cors());
@@ -13,6 +14,20 @@ app.use(express.json());
 
 const db = mysql.createConnection(dbConfig);
 
+// SSL 인증서 및 개인 키 파일 경로
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/jungpyo.club/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/jungpyo.club/fullchain.pem', 'utf8');
+
+const httpsOptions = {
+    key: privateKey,
+    cert: certificate
+  };
+
+const httpsServer = https.createServer(httpsOptions, app);
+
+httpsServer.listen(443, () => {
+    console.log("HTTPS Server is running on port 443");
+});
 
 
 app.post('/signup', [         //회원가입 
