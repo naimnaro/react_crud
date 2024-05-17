@@ -16,7 +16,7 @@ function PostEdit({ user }) {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await axios.get(`https://jungpyo.club:8081/postedit/${post_id}`);
+        const response = await axios.get(`https://jungpyo.club/postedit/${post_id}`);
         const postData = response.data;
         setTitle(postData.title); 
         setContent(postData.content);
@@ -37,7 +37,7 @@ function PostEdit({ user }) {
     else
     {
       try {
-        await axios.put(`https://jungpyo.club:8081/postedit/${post_id}`, { title, content, author_name: user.name });
+        await axios.put(`https://jungpyo.club/postedit/${post_id}`, { title, content, author_name: user.name });
         setModalMessage('게시글이 성공적으로 수정되었습니다.');
         setShowModal(true); // 모달 열기
         
