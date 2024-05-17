@@ -14,20 +14,21 @@ app.use(express.json());
 
 const db = mysql.createConnection(dbConfig);
 
-// SSL 인증서 및 개인 키 파일 경로
-const privateKey = fs.readFileSync('/etc/letsencrypt/live/jungpyo.club/privkey.pem', 'utf8');
-const certificate = fs.readFileSync('/etc/letsencrypt/live/jungpyo.club/fullchain.pem', 'utf8');
+const privateKey = fs.readFileSync('/home/ubuntu/backend/cert/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/home/ubuntu/backend/cert/fullchain.pem', 'utf8');
 
-const httpsOptions = {
-    key: privateKey,
-    cert: certificate
-  };
+const credentials = { key: privateKey, cert: certificate };
 
-const httpsServer = https.createServer(httpsOptions, app);
-
-httpsServer.listen(443, () => {
-    console.log("HTTPS Server is running on port 443");
-});
+app.get('/', (req, res) => {
+    res.send('Hello Secure World!');
+  });
+  
+  // HTTPS 서버 생성 및 시작
+  const httpsServer = https.createServer(credentials, app);
+  
+  httpsServer.listen(443, () => {
+    console.log('HTTPS Server running on port 443');
+  });
 
 
 app.post('/signup', [         //회원가입 
