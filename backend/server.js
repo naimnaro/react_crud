@@ -26,8 +26,8 @@ app.get('/', (req, res) => {
   // HTTPS 서버 생성 및 시작
   const httpsServer = https.createServer(credentials, app);
   
-  httpsServer.listen(8443, () => {
-    console.log('HTTPS Server running on port 8443');
+  httpsServer.listen(443, () => {
+    console.log('HTTPS Server running on port 443');
   });
 
 
