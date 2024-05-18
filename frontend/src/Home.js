@@ -6,14 +6,9 @@ axios.defaults.withCredentials = true;
 function Home({ user, setUser }) {
 
     const navigate = useNavigate();
-    const location = useLocation();
+    
     useEffect(() => {
         console.log("User:", user);
-
-
-
-
-     
 
 
     }, [user, setUser]);

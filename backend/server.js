@@ -10,12 +10,23 @@ const fs = require('fs');
 const session = require('express-session');
 
 const app = express();
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(cors({
     origin: ['https://jungpyo.club', 'https://jungpyo.net', 'jungpyo.net', 'jungpyo.club'],
-    credentials: true
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
   }));
+
+  app.options('*', cors({
+    origin: 'https://jungpyo.net',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
   app.use(session({
     secret: 'my_test_key',
