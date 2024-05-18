@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(cors({
-    origin: ['https://jungpyo.club', 'https://jungpyo.net', 'jungpyo.net', 'jungpyo.club'],
+    origin: ['https://jungpyo.club', 'https://jungpyo.net', 'jungpyo.net', 'jungpyo.club', 'https://www.jungpyo.net', 'www.jungpyo.net'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
