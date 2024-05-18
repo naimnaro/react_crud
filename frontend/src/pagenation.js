@@ -31,7 +31,7 @@ function PaginationComponent({ user }) {  // . user 프로퍼티를 props로 받
 
     const fetchPosts = async (pageNumber) => { // 페이지 번호에 해당하는 게시글을 가져오는 함수를 정의합니다.
         try {
-            const response = await axios.get(`https://jungpyo.club/pagenation?page=${pageNumber}`); // 페이지 번호에 따라 게시글을 가져옵니다.
+            const response = await axios.get(`https://www.jungpyo.club/pagenation?page=${pageNumber}`); // 페이지 번호에 따라 게시글을 가져옵니다.
             const formattedPosts = response.data.post.map(post => ({
                 ...post,
                 created_at: formatDateTime(post.created_at)
@@ -87,7 +87,7 @@ function PaginationComponent({ user }) {  // . user 프로퍼티를 props로 받
     const handleDeletePost = async (post_id, author_name) => {
         if (user.name === author_name) {
             try {
-                await axios.delete(`https://jungpyo.club/post/${post_id}`, {
+                await axios.delete(`https://www.jungpyo.club/post/${post_id}`, {
                     headers: {
                         Authorization: `Bearer ${user.token}`
                     }
