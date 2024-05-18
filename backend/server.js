@@ -13,7 +13,7 @@ const app = express();
 app.use(express.json());
 
 app.use(cors({
-    origin: 'https://jungpyo.club',
+    origin: ['https://jungpyo.club', 'https://jungpyo.net'],
     credentials: true
   }));
 
@@ -338,6 +338,6 @@ app.get('/post/search', (req, res) => {         // 게시글 검색
 });
 
 
-app.listen(8081, () => {
-    console.log("Server is running on port 8081");
+app.listen(443, () => {
+    console.log("Server is running on port 443");
 });

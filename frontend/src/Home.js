@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import axios from 'axios';
 axios.defaults.withCredentials = true;
 
 function Home({ user, setUser }) {

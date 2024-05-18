@@ -1,7 +1,7 @@
 import React, { useState,useEffect} from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './login';
-import Signup from './signup';
+import Login from './Login';
+import Signup from './Signup';
 import Home from './Home';
 import PostForm from './post';
 import PostList from './postlist';
