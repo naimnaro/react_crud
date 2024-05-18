@@ -13,7 +13,7 @@ const app = express();
 app.use(express.json());
 
 app.use(cors({
-    origin: ['https://jungpyo.club', 'https://jungpyo.net'],
+    origin: ['https://jungpyo.club', 'https://jungpyo.net', 'jungpyo.net', 'jungpyo.club'],
     credentials: true
   }));
 
