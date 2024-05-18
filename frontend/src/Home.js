@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 
@@ -10,21 +10,13 @@ function Home({ user, setUser }) {
     useEffect(() => {
         console.log("User:", user);
 
-        const handlePageChange = () => {
-            const validPaths = ['/postlist', '/pagenation'];
-            if (!validPaths.includes(location.pathname)) {
-                localStorage.removeItem('user');
-                setUser(null);
-            }
-        };
 
 
-        handlePageChange();
 
      
 
 
-    }, [user, setUser, location]);
+    }, [user, setUser]);
 
     const handleLogout = () => {
         localStorage.removeItem('user');
