@@ -26,7 +26,7 @@ function Signup() {
         await axios.post('https://jungpyo.club/signup', values);
         setModalMessage("회원가입이 완료되었습니다.");
         setShowModal(true); // 모달 열기
-        // navigate('/');
+        // navigate('/'); 
       } catch (err) {
         if (err.response && err.response.data && err.response.data.error) {
           setModalMessage(err.response.data.error);
