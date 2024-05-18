@@ -1,13 +1,44 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 
 function Home({ user, setUser }) {
+
     const navigate = useNavigate();
+    const location = useLocation();
     useEffect(() => {
         console.log("User:", user);
-    }, [user]);
+
+        const handlePageChange = () => {
+            const validPaths = ['/postlist', '/pagenation'];
+            if (!validPaths.includes(location.pathname)) {
+                localStorage.removeItem('user');
+                setUser(null);
+            }
+        };
+
+        
+
+        const handleBeforeUnload = (event) => {
+            localStorage.removeItem('user');
+            setUser(null);
+            event.returnValue = ''; // 필요한 경우 브라우저에서 경고 메시지를 표시
+        };
+
+        handlePageChange();
+
+        window.addEventListener('popstate', handlePageChange);
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener('popstate', handlePageChange);
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+
+
+
+    }, [user, setUser, location]);
 
     const handleLogout = () => {
         localStorage.removeItem('user');

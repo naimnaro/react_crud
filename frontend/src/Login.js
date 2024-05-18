@@ -1,4 +1,4 @@
-import React, { useState } from 'react';   // React 라이브러리에서 useState 훅을 가져옴.
+import React, { useState, useEffect } from 'react';   // React 라이브러리에서 useState 훅을 가져옴.
 import { Link, useNavigate } from 'react-router-dom';  // react-router-dom 라이브러리에서 Link 컴포넌트와 useNavigate 훅을 가져옵니다.
 import axios from 'axios';
 import Validation from './LoginValidation';  // 로그인 유효성 검사파일 LoginValidation.js를 가져옴
@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button';
 
 axios.defaults.withCredentials = true;
 
-function Login({setUser}) {
+function Login({user , setUser}) {
   const navigate = useNavigate();  // 네비게이션 객체를 가져온다.
   const [values, setValues] = useState({ email: '', password: '' });    // useState 사용, 초기값 values 를 ''로 설정, setValues로 업데이트
   const [errors, setErrors] = useState({});    // 에러 관리
@@ -18,6 +18,14 @@ function Login({setUser}) {
   const handleInput = (event) => {  // 폼에 입력된값을 setValues (업데이트) (onchange : 변경될때)
     setValues((prev) => ({ ...prev, [event.target.name]: event.target.value }));  
   };
+
+  useEffect(() => {
+    // 로그인 페이지에 진입할 때 로컬스토리지를 비움.
+    localStorage.removeItem('user');
+    setUser(null);
+
+    console.log("User:", user)
+  }, [setUser])
 
   const handleSubmit = (event) => {   // 폼에 입력된값을 버튼을 눌러 제출, (onsubmit : 제출될떄)
     event.preventDefault(); // html 기본 이벤트발생을 방지 
