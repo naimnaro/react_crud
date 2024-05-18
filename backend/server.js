@@ -9,8 +9,13 @@ const https = require('https');
 const fs = require('fs');
 
 const app = express();
-app.use(cors());
 app.use(express.json());
+
+app.use(cors({
+    origin: 'https://jungpyo.club',
+    credentials: true
+  }));
+
 
 const db = mysql.createConnection(dbConfig);
 
@@ -29,6 +34,9 @@ app.get('/', (req, res) => {
   httpsServer.listen(443, () => {
     console.log('HTTPS Server running on port 443');
   });
+
+
+
 
 
 app.post('/signup', [         //회원가입 
