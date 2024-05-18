@@ -4,6 +4,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Modal from 'react-bootstrap/Modal';
 
+axios.defaults.withCredentials = true;
+
 function PostEdit({ user }) {
   const location = useLocation();
   const navigate = useNavigate();

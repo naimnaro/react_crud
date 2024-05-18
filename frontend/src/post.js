@@ -4,6 +4,8 @@ import axios from 'axios';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
+axios.defaults.withCredentials = true;
+
 function PostForm({ user }) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');

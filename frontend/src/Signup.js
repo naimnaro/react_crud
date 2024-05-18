@@ -5,6 +5,8 @@ import axios from 'axios';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
+axios.defaults.withCredentials = true;
+
 
 function Signup() {
   const [values, setValues] = useState({ name: '', email: '', password: '' });  // values 초기값 '', setValues로 갱신

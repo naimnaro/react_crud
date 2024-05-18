@@ -4,6 +4,8 @@ import Modal from 'react-bootstrap/Modal';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Table, ListGroup, Form, Button } from 'react-bootstrap';
 
+axios.defaults.withCredentials = true;
+
 function PostRead({ user }) {
     const location = useLocation();
     const navigate = useNavigate();

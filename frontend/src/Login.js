@@ -5,6 +5,8 @@ import Validation from './LoginValidation';  // 로그인 유효성 검사파일
 import Modal from 'react-bootstrap/Modal';    
 import Button from 'react-bootstrap/Button';
 
+axios.defaults.withCredentials = true;
+
 function Login({setUser}) {
   const navigate = useNavigate();  // 네비게이션 객체를 가져온다.
   const [values, setValues] = useState({ email: '', password: '' });    // useState 사용, 초기값 values 를 ''로 설정, setValues로 업데이트

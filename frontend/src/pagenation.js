@@ -5,6 +5,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 
+axios.defaults.withCredentials = true;
+
 function PaginationComponent({ user }) {  // . user 프로퍼티를 props로 받습니다. (세션에 저장중인 유저정보를 얻기위해)
     const [posts, setPosts] = useState([]); // 현재 페이지의 게시글 목록을 담을 상태(posts)를 초기화합니다.
     const [currentPage, setCurrentPage] = useState(1);  // 현재 페이지 번호를 담을 상태(currentPage)를 초기화합니다.

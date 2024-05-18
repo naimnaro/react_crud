@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+axios.defaults.withCredentials = true;
+
 function PostList({ user }) {
     const [posts, setPosts] = useState([]);
     const navigate = useNavigate();

@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+axios.defaults.withCredentials = true;
+
 function Home({ user, setUser }) {
     const navigate = useNavigate();
     useEffect(() => {
