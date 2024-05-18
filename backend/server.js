@@ -7,6 +7,7 @@ const { check, validationResult } = require('express-validator');
 const path = require('path');
 const https = require('https');
 const fs = require('fs');
+const session = require('express-session');
 
 const app = express();
 app.use(express.json());
@@ -14,6 +15,13 @@ app.use(express.json());
 app.use(cors({
     origin: 'https://jungpyo.club',
     credentials: true
+  }));
+
+  app.use(session({
+    secret: 'my_test_key',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 600000 } // 10분
   }));
 
 
