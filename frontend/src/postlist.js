@@ -15,9 +15,9 @@ function PostList({ user }) {
 
     const fetchPosts = async () => {
         try {
-            const response = await axios.get('https://jungpyo.club:8081/post');
+            const response = await axios.get('https://jungpyo.club/post');
             setPosts(response.data);
-        } catch (error) {
+        } catch (error) { 
             console.error('게시물을 불러오는데 실패했습니다.', error);
         }
     };

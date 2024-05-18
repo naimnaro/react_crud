@@ -24,7 +24,7 @@ function Signup() {
     const err = Validation(values);
     setErrors(err);
     if (err.name === '' && err.email === '' && err.password === '') {
-      try {
+      try { 
         await axios.post('https://jungpyo.club/signup', values);
         setModalMessage("회원가입이 완료되었습니다.");
         setShowModal(true); // 모달 열기
