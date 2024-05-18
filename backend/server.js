@@ -21,7 +21,7 @@ app.use(cors({
     secret: 'my_test_key',
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 600000 } // 10분
+    cookie: { maxAge: 600000000 } // 10분
   }));
 
 
