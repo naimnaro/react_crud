@@ -28,7 +28,10 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "globals": {
+      "axios": true
+    }
   },
   "browserslist": {
     "production": [
