@@ -13,27 +13,15 @@ function Home({ user, setUser }) {
         const handlePageChange = () => {
             const validPaths = ['/postlist', '/pagenation'];
             if (!validPaths.includes(location.pathname)) {
-                handleLogout();
+                localStorage.removeItem('user');
+                setUser(null);
             }
         };
 
-        
-
-        const handleBeforeUnload = (event) => {
-            handleLogout();
-            event.returnValue = ''; // 필요한 경우 브라우저에서 경고 메시지를 표시
-        };
 
         handlePageChange();
 
-        window.addEventListener('popstate', handlePageChange);
-        window.addEventListener('beforeunload', handleBeforeUnload);
-
-        return () => {
-            window.removeEventListener('popstate', handlePageChange);
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-        };
-
+     
 
 
     }, [user, setUser, location]);
