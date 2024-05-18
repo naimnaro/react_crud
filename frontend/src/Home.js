@@ -13,16 +13,14 @@ function Home({ user, setUser }) {
         const handlePageChange = () => {
             const validPaths = ['/postlist', '/pagenation'];
             if (!validPaths.includes(location.pathname)) {
-                localStorage.removeItem('user');
-                setUser(null);
+                handleLogout();
             }
         };
 
         
 
         const handleBeforeUnload = (event) => {
-            localStorage.removeItem('user');
-            setUser(null);
+            handleLogout();
             event.returnValue = ''; // 필요한 경우 브라우저에서 경고 메시지를 표시
         };
 
