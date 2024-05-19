@@ -1,6 +1,6 @@
 {
-  "short_name": "리액트 게시판",
-  "name": "mady by leejungpyo",
+  "short_name": "React App",
+  "name": "Create React App Sample",
   "icons": [
     {
       "src": "favicon.ico",
