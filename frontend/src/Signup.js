@@ -7,32 +7,30 @@ import Button from 'react-bootstrap/Button';
 
 axios.defaults.withCredentials = true;
 
-
 function Signup() {
-  const [values, setValues] = useState({ name: '', email: '', password: '' });  // values 초기값 '', setValues로 갱신
+  const [values, setValues] = useState({ name: '', email: '', password: '' });
   const navigate = useNavigate();
-  const [errors, setErrors] = useState({});     // 에러 관리
-  const [showModal, setShowModal] = useState(false);  //모달 상태 관리
+  const [errors, setErrors] = useState({});
+  const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
 
-  const handleInput = (event) => { // 폼에 입력된값을 setValues (업데이트) (onchange : 변경될때)
+  const handleInput = (event) => {
     setValues((prev) => ({ ...prev, [event.target.name]: event.target.value }));
   };
 
-  const handleSubmit = async (event) => {  // 이하 login.js와 동일.
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const err = Validation(values);
     setErrors(err);
     if (err.name === '' && err.email === '' && err.password === '') {
-      try { 
+      try {
         await axios.post('https://www.jungpyo.club/signup', values);
         setModalMessage("회원가입이 완료되었습니다.");
-        setShowModal(true); // 모달 열기
-        // navigate('/'); 
+        setShowModal(true);
       } catch (err) {
         if (err.response && err.response.data && err.response.data.error) {
           setModalMessage(err.response.data.error);
-          setShowModal(true); // 모달 열기
+          setShowModal(true);
         } else {
           alert('An error occurred while signing up');
         }
@@ -42,53 +40,54 @@ function Signup() {
   };
 
   const closeModal = () => {
-    setShowModal(false); // 모달 닫기
+    setShowModal(false);
   };
 
   return (
-    <div className='d-flex justify-content-center align-items-center bg-secondary vh-100'>
-      <div className='bg-white p-3 rounded w-25' style={{ display: showModal ? 'none' : 'block' }}>
-        <h2>Sign-Up</h2>
-        <form action='' onSubmit={handleSubmit}>
+    <div className='container-fluid d-flex justify-content-center align-items-center bg-secondary vh-100'>
+      <div className='bg-white p-3 rounded' style={{ maxWidth: '400px', width: '100%' }}>
+        <h2 className='text-center'>Sign-Up</h2>
+        <form onSubmit={handleSubmit}>
           <div className='mb-3'>
-            <label htmlFor='name'><strong>Name</strong></label>
+            <label htmlFor='name' className='form-label'><strong>Name</strong></label>
             <input
               type='text'
               placeholder='Enter Name'
               name='name'
               onChange={handleInput}
-              className='form-control rounded-0'
+              className={`form-control ${errors.name ? 'is-invalid' : ''}`}
             />
-            {errors.name && <span className='text-danger'> {errors.name}</span>}
+            <div className='invalid-feedback'>{errors.name}</div>
           </div>
           <div className='mb-3'>
-            <label htmlFor='email'><strong>Email</strong></label>
+            <label htmlFor='email' className='form-label'><strong>Email</strong></label>
             <input
               type='email'
               placeholder='Enter Email'
               name='email'
               onChange={handleInput}
-              className='form-control rounded-0'
+              className={`form-control ${errors.email ? 'is-invalid' : ''}`}
             />
-            {errors.email && <span className='text-danger'> {errors.email}</span>}
+            <div className='invalid-feedback'>{errors.email}</div>
           </div>
           <div className='mb-3'>
-            <label htmlFor='password'><strong>Password</strong></label>
+            <label htmlFor='password' className='form-label'><strong>Password</strong></label>
             <input
               type='password'
               placeholder='Enter Password'
               name='password'
               onChange={handleInput}
-              className='form-control rounded-0'
+              className={`form-control ${errors.password ? 'is-invalid' : ''}`}
             />
-            {errors.password && <span className='text-danger'> {errors.password}</span>}
+            <div className='invalid-feedback'>{errors.password}</div>
           </div>
-          <button type='submit' className='btn btn-success w-100 rounded-0'>Sign up</button>
-          <p>You are agree to our terms and policies</p>
-          <Link to='/' className='btn btn-default border w-100 bg-light rounded-0 text-decoration-none'>Login</Link>
+          <button type='submit' className='btn btn-success w-100'>Sign up</button>
+          <p className='text-center mt-2'>You are agree to our terms and policies</p>
+          <div className='text-center mt-2'>
+            <Link to='/' className='btn btn-default border bg-light text-decoration-none  w-100'>Log in</Link>
+          </div>
         </form>
       </div>
-      {/* 모달 컴포넌트 */}
       <Modal show={showModal} onHide={closeModal} centered>
         <Modal.Header closeButton>
           <Modal.Title>회원가입</Modal.Title>
