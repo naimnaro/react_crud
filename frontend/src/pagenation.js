@@ -109,7 +109,7 @@ function PaginationComponent({ user }) {  // . user 프로퍼티를 props로 받
 
     const fetchSearchedPosts = async (pageNumber) => {  // 실시간 검색, 
         try {
-            const response = await axios.get(`https://jungpyo.club/post/search?term=${searchTerm}`);
+            const response = await axios.get(`https://www.jungpyo.club/post/search?term=${searchTerm}`);
             const formattedPosts = response.data.map(post => ({
                 ...post,
                 created_at: formatDateTime(post.created_at)
