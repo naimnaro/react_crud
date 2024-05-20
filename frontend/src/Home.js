@@ -40,15 +40,15 @@ function Home({ user, setUser }) {
                             <p className="mb-4" style={{ fontSize: '20px', textAlign: 'left', color: '#fff' }}>Developer Info.</p>
                             <div className="footer-link mb-1" style={{ display: 'flex', alignItems: 'center' }}>
                                 <FontAwesomeIcon icon={faEnvelope} style={{ color: '#fff' }} />
-                                <a href="mailto:xez8jf@gmail.com" className="ml-2" style={{ color: '#fff' }}>xez8jf@gmail.com</a>
+                                <a href="mailto:xez8jf@gmail.com" className="ml-2" style={{ color: '#fff' }}> xez8jf@gmail.com</a>
                             </div>
                             <div className="footer-link mb-1" style={{ display: 'flex', alignItems: 'center' }}>
                                 <FontAwesomeIcon icon={faLink} style={{ color: '#fff' }} />
-                                <a href="https://www.jungpyo.info/" target="_blank" rel="noopener noreferrer" className="ml-2" style={{ color: '#fff' }}>jungpyo.info/</a>
+                                <a href="https://www.jungpyo.info/" target="_blank" rel="noopener noreferrer" className="ml-2" style={{ color: '#fff' }}> jungpyo.info</a>
                             </div>
                             <div className="footer-link mb-1" style={{ display: 'flex', alignItems: 'center' }}>
                                 <FontAwesomeIcon icon={faInstagram} style={{ color: '#fff' }} />
-                                <a href="https://www.instagram.com/naim_naro/" target="_blank" rel="noopener noreferrer" className="ml-2" style={{ color: '#fff' }}>instagram.com/naim_naro/</a>
+                                <a href="https://www.instagram.com/naim_naro/" target="_blank" rel="noopener noreferrer" className="ml-2" style={{ color: '#fff' }}> instagram.com/naim_naro</a>
                             </div>
                         </div>
 
