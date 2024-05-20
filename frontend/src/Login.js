@@ -71,7 +71,7 @@ function Login({ user, setUser }) {
         )}
         <form action='' onSubmit={handleSubmit}>
           <div className='mb-3'>
-            <label htmlFor='email'><strong>Email</strong></label>
+            <label htmlFor='email'><strong>이메일</strong></label>
             <input
               type='email'
               placeholder='Enter Email'
@@ -83,7 +83,7 @@ function Login({ user, setUser }) {
             {errors.email && <span className='text-danger'> {errors.email}</span>}
           </div>
           <div className='mb-3'>
-            <label htmlFor='password'><strong>Password</strong></label>
+            <label htmlFor='password'><strong>비밀번호</strong></label>
             <input
               type='password'
               placeholder='Enter Password'
@@ -94,9 +94,9 @@ function Login({ user, setUser }) {
             />
             {errors.password && <span className='text-danger'> {errors.password}</span>}
           </div>
-          <button type='submit' className='btn btn-success w-100 rounded-0' style={styles.button}>Log in</button>
+          <button type='submit' className='btn btn-success w-100 rounded-0' style={styles.button}>로그인</button>
           <p>You are agree to our terms and policies</p>
-          <Link to='/signup' className='btn btn-default border w-100 bg-light rounded-0 text-decoration-none' style={styles.link}>Create Account</Link>
+          <Link to='/signup' className='btn btn-default border w-100 bg-light rounded-0 text-decoration-none' style={styles.link}>회원가입</Link>
         </form>
       </div>
       <Modal show={showModal} onHide={closeModal} centered>
