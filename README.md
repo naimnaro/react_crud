@@ -2,9 +2,14 @@
 
 <br>[![YouTube Thumbnail](https://img.youtube.com/vi/33kBN3k13bY/0.jpg)](https://www.youtube.com/embed/33kBN3k13bY)
 
-<br>리액트와 Mysql 를 연동해 CRUD를 갖춘 게시판을 구현합니다.
-<br>계정/게시판(CRUD)/댓글/검색/페이징이 구현되어있습니다. aws 서비스를 이용해 배포되었습니다.
-<br>사진 클릭시 구현영상링크로 이동합니다.
+
+도메인 : https://jungpyo.net/ ( jungpyo.net )
+<br>기능 : 웹 게시판 ( 회원가입 | 글쓰기/수정/삭제/읽기 | 댓글쓰기/삭제) 
+<br>프론트엔드 : react +  bootstrap + modal 
+<br>백엔드 : nodejs + expressjs  + axios + cors 
+<br>DB : Mysql 
+<br>서버 : aws ec2 
+<br>보안 : SSL 인증서를 사용하여 HTTPS 적용 
 <br>
 
 후기 :
