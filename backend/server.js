@@ -70,37 +70,30 @@ app.post('/signup', [         //회원가입
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
-
     // 이름과 이메일을 따로 중복 확인하여 이미 존재하는 경우 오류 메시지 반환
     db.query('SELECT * FROM users WHERE name = ?', [req.body.name], (err, nameResults) => {
         if (err) {
             console.error("Error executing name query:", err);
             return res.status(500).json({ error: "Error executing name query" });
         }
-
         db.query('SELECT * FROM users WHERE email = ?', [req.body.email], (err, emailResults) => {
             if (err) {
                 console.error("Error executing email query:", err);
                 return res.status(500).json({ error: "Error executing email query" });
             }
-
             if (nameResults.length > 0) {
                 // 이미 존재하는 이름인 경우 오류 메시지 전달
                 console.log("Name already exists (이미 존재하는 닉네임 입니다.)")
                 return res.status(400).json({ error: "Name already exists (이미 존재하는 닉네임 입니다.)" });
             }
-
             if (emailResults.length > 0) {
                 // 이미 존재하는 이메일인 경우 오류 메시지 전달
                 console.log("Email already exists (이미 해당 이메일로 가입된 계정이 존재합니다.)")
                 return res.status(400).json({ error: "Email already exists (이미 가입된 이메일 입니다.)" });
             }
-
             // 중복이 없으면 회원가입 처리 진행
             const sql = "INSERT INTO `users`(`name`, `email`, `password`) VALUES (?, ?, ?)";
-
             const values = [req.body.name, req.body.email, req.body.password];
-
             db.query(sql, values, (err, data) => {
                 if (err) {
                     console.error("Error executing insert query:", err);
