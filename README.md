@@ -1,5 +1,5 @@
 **[배포완료] https://jungpyo.net/**
-(사진 클릭시 동영상으로 이동합니다.)
+<br>(사진 클릭시 동영상으로 이동합니다.)
 <br>[![YouTube Thumbnail](https://img.youtube.com/vi/EIK0m_DOJgM/0.jpg)](https://youtu.be/EIK0m_DOJgM)
 
 
