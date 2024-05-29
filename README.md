@@ -1,6 +1,6 @@
 **[배포완료] https://jungpyo.net/**
 
-<br>[![YouTube Thumbnail](https://img.youtube.com/vi/33kBN3k13bY/0.jpg)](https://www.youtube.com/embed/33kBN3k13bY)
+<br>[![YouTube Thumbnail](https://youtu.be/EIK0m_DOJgM?si=K52B-DjLyPUEwML_)
 
 
 도메인 : https://jungpyo.net/ ( jungpyo.net )
