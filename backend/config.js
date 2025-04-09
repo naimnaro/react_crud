@@ -5,4 +5,4 @@ const dbConfig = {
     database: "account" 
 };
 
-module.exports = dbConfig;
+module.exports = dbConfig; 
